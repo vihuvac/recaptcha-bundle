@@ -1,0 +1,16 @@
+parameters:
+    magnopus_recaptcha.form.type.class: Magnopus\Bundle\RecaptchaBundle\Form\Type\RecaptchaType
+    magnopus_recaptcha.validator.true.class: Magnopus\Bundle\RecaptchaBundle\Validator\Constraints\TrueValidator
+
+services:
+    magnopus_recaptcha.form.type:
+        class:      "%magnopus_recaptcha.form.type.class%"
+        arguments:  [ "@service_container" ]
+        tags:
+            - { name: form.type, alias: magnopus_recaptcha }
+
+    magnopus_recaptcha.validator.true:
+        class:      "%magnopus_recaptcha.validator.true.class%"
+        arguments:  [ "@service_container" ]
+        tags:
+            - { name: validator.constraint_validator, alias: magnopus_recaptcha.true }
