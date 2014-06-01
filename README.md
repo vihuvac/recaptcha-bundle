@@ -1,4 +1,4 @@
-MagnopusRecaptchaBundle
+GoogleRecaptchaBundle
 ======================
 
 This bundle provides easy reCAPTCHA form field for Symfony.
@@ -7,7 +7,7 @@ This bundle provides easy reCAPTCHA form field for Symfony.
 
 ### Step 1: Using Composer (recommended)
 
-To install MagnopusRecaptchaBundle with Composer just add the following to your
+To install GoogleRecaptchaBundle with Composer just add the following to your
 `composer.json` file:
 
 ```js
@@ -41,7 +41,7 @@ register the new bundle:
 // in AppKernel::registerBundles()
 $bundles = array(
     // ...
-    new Magnopus\Bundle\RecaptchaBundle\MagnopusRecaptchaBundle(),
+    new Google\RecaptchaBundle\GoogleRecaptchaBundle(),
     // ...
 );
 ```
@@ -52,9 +52,9 @@ First, checkout a copy of the code. Just add the following to the ``deps``
 file of your Symfony Standard Distribution:
 
 ```ini
-[MagnopusRecaptchaBundle]
-    git=http://github.com/vihuvac/MagnopusRecaptchaBundle.git
-    target=/bundles/Magnopus/Bundle/RecaptchaBundle
+[GoogleRecaptchaBundle]
+    git=http://github.com/vihuvac/GoogleRecaptchaBundle.git
+    target=/bundles/Google/RecaptchaBundle
 ```
 
 **NOTE**: You can add `version` tag in the snippet above with the latest stable
@@ -68,7 +68,7 @@ Then register the bundle with your kernel:
 // in AppKernel::registerBundles()
 $bundles = array(
     // ...
-    new Magnopus\Bundle\RecaptchaBundle\MagnopusRecaptchaBundle(),
+    new Google\RecaptchaBundle\GoogleRecaptchaBundle(),
     // ...
 );
 ```
@@ -81,7 +81,7 @@ Make sure that you also register the namespace with the autoloader:
 // app/autoload.php
 $loader->registerNamespaces(array(
     // ...
-    'Magnopus'  =>  __DIR__.'/../vendor/bundles',
+    'Google'  =>  __DIR__.'/../vendor/bundles',
     // ...
 ));
 ```
@@ -96,16 +96,16 @@ $ php bin/vendors install
 ### Step 1 (alternative): Using submodules (Symfony 2.0.x)
 
 If you're managing your vendor libraries with submodules, first create the
-`vendor/bundles/Magnopus/Bundle` directory:
+`vendor/bundles/Google` directory:
 
 ``` bash
-$ mkdir -pv vendor/bundles/Magnopus/Bundle
+$ mkdir -pv vendor/bundles/Google
 ```
 
 Next, add the necessary submodule:
 
 ``` bash
-$ git submodule add git://github.com/vihuvac/MagnopusRecaptchaBundle.git vendor/bundles/Magnopus/Bundle/RecaptchaBundle
+$ git submodule add git://github.com/vihuvac/GoogleRecaptchaBundle.git vendor/bundles/Google/RecaptchaBundle
 ```
 
 ### Step2: Configure the autoloader
@@ -119,7 +119,7 @@ Add the following entry to your autoloader:
 $loader->registerNamespaces(array(
     // ...
 
-    'Magnopus' => __DIR__.'/../vendor/bundles',
+    'Google' => __DIR__.'/../vendor/bundles',
 ));
 ```
 
@@ -136,7 +136,7 @@ public function registerBundles()
     $bundles = array(
         // ...
 
-        new Magnopus\Bundle\RecaptchaBundle\MagnopusRecaptchaBundle(),
+        new Google\RecaptchaBundle\GoogleRecaptchaBundle(),
     );
 }
 ```
@@ -148,7 +148,7 @@ Finally, add the following to your config file:
 ``` yaml
 # app/config/config.yml
 
-magnopus_recaptcha:
+google_recaptcha:
     public_key:   here_is_your_public_key
     private_key:  here_is_your_private_key
     secure:       false
@@ -162,7 +162,7 @@ You can easily disable reCAPTCHA (for example in a local or test environment):
 ``` yaml
 # app/config/config.yml
 
-magnopus_recaptcha:
+google_recaptcha:
     // ...
     enabled: false
 ```
@@ -179,7 +179,7 @@ When creating a new form class add the following line to create the field:
 public function buildForm(FormBuilder $builder, array $options)
 {
     // ...
-    $builder->add('recaptcha', 'magnopus_recaptcha');
+    $builder->add('recaptcha', 'google_recaptcha');
     // ...
 }
 ```
@@ -192,7 +192,7 @@ You can pass extra options to reCAPTCHA with the "attr > options" option:
 public function buildForm(FormBuilder $builder, array $options)
 {
     // ...
-    $builder->add('recaptcha', 'magnopus_recaptcha',
+    $builder->add('recaptcha', 'google_recaptcha',
         array(
             'attr' => array(
                 'options' => array(
@@ -210,7 +210,7 @@ To validate the field use:
 ``` php
 <?php
 
-use Magnopus\Bundle\RecaptchaBundle\Validator\Constraints as Recaptcha;
+use Google\RecaptchaBundle\Validator\Constraints as Recaptcha;
 
 /**
  * @Recaptcha\True
@@ -225,12 +225,12 @@ Please note that if you set ```mapped=>false``` then the annotation will not wor
 ``` php
 <?php
 
-use Magnopus\Bundle\RecaptchaBundle\Validator\Constraints\True;
+use Google\RecaptchaBundle\Validator\Constraints\True;
 
 public function buildForm(FormBuilder $builder, array $options)
 {
     // ...
-    $builder->add('recaptcha', 'magnopus_recaptcha',
+    $builder->add('recaptcha', 'google_recaptcha',
         array(
             'attr'          => array(
                 'options' => array(
@@ -252,7 +252,7 @@ Cool, now you are ready to implement the form widget:
 **PHP**:
 
 ``` php
-<?php $view['form']->setTheme($form, array('MagnopusRecaptchaBundle:Form')) ?>
+<?php $view['form']->setTheme($form, array('GoogleRecaptchaBundle:Form')) ?>
 
 <?php echo $view['form']->widget($form['recaptcha'],
     array(
@@ -268,7 +268,7 @@ Cool, now you are ready to implement the form widget:
 **Twig**:
 
 ``` jinja
-{% form_theme form 'MagnopusRecaptchaBundle:Form:magnopus_recaptcha_widget.html.twig' %}
+{% form_theme form 'GoogleRecaptchaBundle:Form:google_recaptcha_widget.html.twig' %}
 
 {{ form_widget(form.recaptcha, { 'attr': {
     'options' : {
@@ -286,7 +286,7 @@ using JavaScript:
 <div id="recaptcha-container"></div>
 <script type="text/javascript">
     $(document).ready(function() {
-        $.getScript("<?php echo \Magnopus\Bundle\RecaptchaBundle\Form\Type\RecaptchaType::RECAPTCHA_API_JS_SERVER ?>", function() {
+        $.getScript("<?php echo \Google\RecaptchaBundle\Form\Type\RecaptchaType::RECAPTCHA_API_JS_SERVER ?>", function() {
             Recaptcha.create("<?php echo $form['recaptcha']->get('public_key') ?>", "recaptcha-container", {
                 theme: "clean",
             });
@@ -301,7 +301,7 @@ using JavaScript:
 <div id="recaptcha-container"></div>
 <script type="text/javascript">
     $(document).ready(function() {
-        $.getScript("{{ constant('\\Magnopus\\Bundle\\RecaptchaBundle\\Form\\Type\\RecaptchaType::RECAPTCHA_API_JS_SERVER') }}", function() {
+        $.getScript("{{ constant('\\Google\\RecaptchaBundle\\Form\\Type\\RecaptchaType::RECAPTCHA_API_JS_SERVER') }}", function() {
             Recaptcha.create("{{ form.recaptcha.get('public_key') }}", "recaptcha-container", {
                 theme: "clean"
             });
@@ -331,7 +331,7 @@ If you want to use a custom theme, put your chunk of code before setting the the
     <div><a href="javascript:Recaptcha.showhelp()">Help</a></div>
 </div>
 
-{% form_theme form 'MagnopusRecaptchaBundle:Form:magnopus_recaptcha_widget.html.twig' %}
+{% form_theme form 'GoogleRecaptchaBundle:Form:google_recaptcha_widget.html.twig' %}
 
 {{ form_widget(form.recaptcha,
     { 'attr':

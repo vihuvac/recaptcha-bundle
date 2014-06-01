@@ -1,6 +1,15 @@
 <?php
 
-namespace Magnopus\Bundle\RecaptchaBundle\Validator\Constraints;
+/**
+ * This file is part of the Recaptcha package.
+ *
+ * (c) Víctor Hugo Valle Castillo <victouk@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Google\RecaptchaBundle\Validator\Constraints;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraint;
@@ -32,12 +41,12 @@ class TrueValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         // if recaptcha is disabled, always valid
-        if (!$this->container->getParameter('magnopus_recaptcha.enabled')) {
+        if (!$this->container->getParameter('google_recaptcha.enabled')) {
             return true;
         }
 
         // define variable for recaptcha check answer
-        $privateKey = $this->container->getParameter('magnopus_recaptcha.private_key');
+        $privateKey = $this->container->getParameter('google_recaptcha.private_key');
 
         $remoteip   = $this->container->get('request')->server->get('REMOTE_ADDR');
         $challenge  = $this->container->get('request')->get('recaptcha_challenge_field');

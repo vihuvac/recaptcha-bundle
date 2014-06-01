@@ -1,8 +1,8 @@
 {
     "name": "vihuvac/recaptcha-bundle",
-    "description": "This bundle provides easy reCAPTCHA form field integration",
-    "keywords": ["recaptcha"],
-    "homepage": "https://github.com/vihuvac/MagnopusRecaptchaBundle",
+    "description": "This bundle provides an easy reCAPTCHA form field integration into a Symfony Project",
+    "keywords": ["google, recaptcha, symfony, bundle"],
+    "homepage": "https://github.com/vihuvac/GoogleRecaptchaBundle",
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
@@ -13,10 +13,16 @@
         }
     ],
     "require": {
-        "symfony/framework-bundle": "2.*"
+        "symfony/framework-bundle": "~2"
     },
     "autoload": {
-        "psr-0": { "Magnopus\\Bundle\\RecaptchaBundle\\": "" }
+        "psr-0": {
+            "Google\\RecaptchaBundle\\": ""
+        }
     },
-    "target-dir": "Magnopus/Bundle/RecaptchaBundle"
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.3-dev"
+        }
+    }
 }

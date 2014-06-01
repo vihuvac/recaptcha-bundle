@@ -1,10 +1,21 @@
 <?php
 
-namespace Magnopus\Bundle\RecaptchaBundle\Validator\Constraints;
+/**
+ * This file is part of the Recaptcha package.
+ *
+ * (c) Víctor Hugo Valle Castillo <victouk@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Google\RecaptchaBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/** @Annotation */
+/**
+ * @Annotation
+ */
 class True extends Constraint
 {
     public $message = 'validate_captcha_value';
@@ -22,6 +33,6 @@ class True extends Constraint
      */
     public function validatedBy()
     {
-        return 'magnopus_recaptcha.true';
+        return 'google_recaptcha.true';
     }
 }

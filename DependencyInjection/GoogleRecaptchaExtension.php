@@ -1,6 +1,15 @@
 <?php
 
-namespace Magnopus\Bundle\RecaptchaBundle\DependencyInjection;
+/**
+ * This file is part of the Recaptcha package.
+ *
+ * (c) Víctor Hugo Valle Castillo <victouk@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Google\RecaptchaBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -12,7 +21,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class MagnopusRecaptchaExtension extends Extension
+class GoogleRecaptchaExtension extends Extension
 {
     /**
      * {@inheritDoc}
@@ -26,7 +35,7 @@ class MagnopusRecaptchaExtension extends Extension
         $loader->load('services.yml');
 
         foreach ($config as $key => $value) {
-            $container->setParameter('magnopus_recaptcha.'.$key, $value);
+            $container->setParameter('google_recaptcha.'.$key, $value);
         }
 
         $this->registerWidget($container);
@@ -40,7 +49,7 @@ class MagnopusRecaptchaExtension extends Extension
         $templatingEngines = $container->getParameter('templating.engines');
 
         if (in_array('php', $templatingEngines)) {
-            $formRessource = 'MagnopusRecaptchaBundle:Form';
+            $formRessource = 'GoogleRecaptchaBundle:Form';
 
             $container->setParameter('templating.helper.form.resources', array_merge(
                 $container->getParameter('templating.helper.form.resources'),
@@ -49,7 +58,7 @@ class MagnopusRecaptchaExtension extends Extension
         }
 
         if (in_array('twig', $templatingEngines)) {
-            $formRessource = 'MagnopusRecaptchaBundle:Form:magnopus_recaptcha_widget.html.twig';
+            $formRessource = 'GoogleRecaptchaBundle:Form:google_recaptcha_widget.html.twig';
 
             $container->setParameter('twig.form.resources', array_merge(
                 $container->getParameter('twig.form.resources'),

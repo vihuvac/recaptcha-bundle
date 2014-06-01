@@ -1,6 +1,15 @@
 <?php
 
-namespace Magnopus\Bundle\RecaptchaBundle\Form\Type;
+/**
+ * This file is part of the Recaptcha package.
+ *
+ * (c) Víctor Hugo Valle Castillo <victouk@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Google\RecaptchaBundle\Form\Type;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
@@ -56,10 +65,10 @@ class RecaptchaType extends AbstractType
      */
     public function __construct(ContainerInterface $container)
     {
-        $this->publicKey = $container->getParameter('magnopus_recaptcha.public_key');
-        $this->secure    = $container->getParameter('magnopus_recaptcha.secure');
-        $this->enabled   = $container->getParameter('magnopus_recaptcha.enabled');
-        $this->language  = $container->getParameter($container->getParameter('magnopus_recaptcha.locale_key'));
+        $this->publicKey = $container->getParameter('google_recaptcha.public_key');
+        $this->secure    = $container->getParameter('google_recaptcha.secure');
+        $this->enabled   = $container->getParameter('google_recaptcha.enabled');
+        $this->language  = $container->getParameter($container->getParameter('google_recaptcha.locale_key'));
     }
 
     /**
@@ -69,7 +78,7 @@ class RecaptchaType extends AbstractType
     {
         $view->vars = array_replace($view->vars,
             array(
-                'magnopus_recaptcha_enabled' => $this->enabled
+                'google_recaptcha_enabled' => $this->enabled
             )
         );
 
@@ -126,7 +135,7 @@ class RecaptchaType extends AbstractType
      */
     public function getName()
     {
-        return 'magnopus_recaptcha';
+        return 'google_recaptcha';
     }
 
     /**

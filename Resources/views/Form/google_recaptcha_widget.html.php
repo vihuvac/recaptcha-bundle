@@ -1,4 +1,15 @@
-<?php if ($magnopus_recaptcha_enabled): ?>
+<!--{#
+
+    This file is part of the Recaptcha package.
+
+    (c) Víctor Hugo Valle Castillo <victouk@gmail.com>
+
+    For the full copyright and license information, please view the LICENSE
+    file that was distributed with this source code.
+
+#}-->
+
+<?php if ($google_recaptcha_enabled): ?>
     <?php if (isset($attr['options'])): ?>
         <script type="text/javascript">
         var RecaptchaOptions = <?php echo json_encode($attr['options']) ?>;
