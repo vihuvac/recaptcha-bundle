@@ -1,7 +1,7 @@
 {
     "name": "vihuvac/recaptcha-bundle",
     "description": "This bundle provides an easy reCAPTCHA form field integration into a Symfony Project",
-    "keywords": ["google, recaptcha, symfony, bundle"],
+    "keywords": ["Google", "Recaptcha", "Symfony Bundle"],
     "homepage": "https://github.com/vihuvac/GoogleRecaptchaBundle",
     "type": "symfony-bundle",
     "license": "MIT",
@@ -16,9 +16,7 @@
         "symfony/framework-bundle": "~2"
     },
     "autoload": {
-        "psr-0": {
-            "Google\\RecaptchaBundle\\": ""
-        }
+        "psr-4": { "Google\\RecaptchaBundle\\": "" }
     },
     "extra": {
         "branch-alias": {
