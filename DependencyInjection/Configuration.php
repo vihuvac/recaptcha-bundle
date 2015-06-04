@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Google\RecaptchaBundle\DependencyInjection;
+namespace Vihuvac\Bundle\RecaptchaBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -27,15 +27,15 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('google_recaptcha');
+        $rootNode = $treeBuilder->root("vihuvac_recaptcha");
 
         $rootNode
             ->children()
-                ->scalarNode('public_key')->isRequired()->end()
-                ->scalarNode('private_key')->isRequired()->end()
-                ->booleanNode('secure')->defaultFalse()->end()
-                ->booleanNode('enabled')->defaultTrue()->end()
-                ->scalarNode('locale_key')->defaultValue('kernel.default_locale')->end()
+                ->scalarNode("site_key")->isRequired()->end()
+                ->scalarNode("secret_key")->isRequired()->end()
+                ->booleanNode("secure")->defaultFalse()->end()
+                ->booleanNode("enabled")->defaultTrue()->end()
+                ->scalarNode("locale_key")->defaultValue("kernel.default_locale")->end()
             ->end()
         ;
 

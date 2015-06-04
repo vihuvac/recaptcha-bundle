@@ -9,10 +9,10 @@
 
 #}-->
 
-<?php if ($google_recaptcha_enabled): ?>
-    <?php if (isset($attr['options'])): ?>
+<?php if ($vihuvac_recaptcha_enabled): ?>
+    <?php if (isset($attr["options"])): ?>
         <script type="text/javascript">
-        var RecaptchaOptions = <?php echo json_encode($attr['options']) ?>;
+            var RecaptchaOptions = <?php echo json_encode($attr["options"]) ?>;
         </script>
     <?php endif ?>
     <script src="<?php echo $url_challenge ?>" type="text/javascript"></script>

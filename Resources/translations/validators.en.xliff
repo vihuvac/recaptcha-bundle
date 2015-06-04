@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" datatype="plaintext" original="GoogleRecaptchaBundle.en.xliff">
+    <file source-language="en" datatype="plaintext" original="VihuvacRecaptchaBundle.en.xliff">
         <body>
             <trans-unit id="validate_captcha_value">
                 <source>validate_captcha_value</source>

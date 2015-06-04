@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Google\RecaptchaBundle\Validator\Constraints;
+namespace Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -18,7 +18,11 @@ use Symfony\Component\Validator\Constraint;
  */
 class True extends Constraint
 {
-    public $message = 'validate_captcha_value';
+    /**
+     * The reCAPTCHA validation message
+     */
+    public $message = "validate_captcha_value";
+
 
     /**
      * {@inheritdoc}
@@ -33,6 +37,6 @@ class True extends Constraint
      */
     public function validatedBy()
     {
-        return 'google_recaptcha.true';
+        return "vihuvac_recaptcha.true";
     }
 }

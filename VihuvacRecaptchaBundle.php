@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Google\RecaptchaBundle;
+namespace Vihuvac\Bundle\RecaptchaBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class GoogleRecaptchaBundle extends Bundle
+class VihuvacRecaptchaBundle extends Bundle
 {
 }

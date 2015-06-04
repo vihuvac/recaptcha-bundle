@@ -1,8 +1,8 @@
 {
     "name": "vihuvac/recaptcha-bundle",
     "description": "This bundle provides an easy reCAPTCHA form field integration into a Symfony Project",
-    "keywords": ["Google", "Recaptcha", "Symfony Bundle"],
-    "homepage": "https://github.com/vihuvac/GoogleRecaptchaBundle",
+    "keywords": ["Google", "Recaptcha", "Symfony Bundle", "Vihuvac"],
+    "homepage": "https://github.com/vihuvac/recaptcha-bundle.git",
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
@@ -10,17 +10,21 @@
             "name": "Víctor Hugo Valle Castillo",
             "email": "victouk@gmail.com",
             "homepage": "http://vihuvac.com"
+        },
+        {
+            "name": "Open Source Community",
+            "homepage": "https://github.com/vihuvac/recaptcha-bundle/contributors"
         }
     ],
     "require": {
         "symfony/framework-bundle": "~2"
     },
     "autoload": {
-        "psr-4": { "Google\\RecaptchaBundle\\": "" }
+        "psr-4": { "Vihuvac\\Bundle\\RecaptchaBundle\\": "" }
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.3-dev"
+            "dev-master": "1.0-dev"
         }
     }
 }

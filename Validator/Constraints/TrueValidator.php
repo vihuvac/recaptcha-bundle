@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Google\RecaptchaBundle\Validator\Constraints;
+namespace Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraint;
@@ -18,12 +18,16 @@ use Symfony\Component\Validator\Exception\ValidatorException;
 
 class TrueValidator extends ConstraintValidator
 {
-    protected $container;
-
     /**
      * The reCAPTCHA server URL's
      */
-    const RECAPTCHA_VERIFY_SERVER = 'www.google.com';
+    const RECAPTCHA_VERIFY_SERVER = "www.google.com";
+
+    /**
+     * @var container
+     */
+    protected $container;
+
 
     /**
      * Construct.
@@ -41,18 +45,18 @@ class TrueValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         // if recaptcha is disabled, always valid
-        if (!$this->container->getParameter('google_recaptcha.enabled')) {
+        if (!$this->container->getParameter("vihuvac_recaptcha.enabled")) {
             return true;
         }
 
         // define variable for recaptcha check answer
-        $privateKey = $this->container->getParameter('google_recaptcha.private_key');
+        $secretKey = $this->container->getParameter("vihuvac_recaptcha.secret_key");
 
-        $remoteip   = $this->container->get('request')->server->get('REMOTE_ADDR');
-        $challenge  = $this->container->get('request')->get('recaptcha_challenge_field');
-        $response   = $this->container->get('request')->get('recaptcha_response_field');
+        $remoteip   = $this->container->get("request")->server->get("REMOTE_ADDR");
+        $challenge  = $this->container->get("request")->get("recaptcha_challenge_field");
+        $response   = $this->container->get("request")->get("recaptcha_response_field");
 
-        if (!$this->checkAnswer($privateKey, $remoteip, $challenge, $response)) {
+        if (!$this->checkAnswer($secretKey, $remoteip, $challenge, $response)) {
             $this->context->addViolation($constraint->message);
         }
     }
@@ -60,7 +64,7 @@ class TrueValidator extends ConstraintValidator
     /**
       * Calls an HTTP POST function to verify if the user's guess was correct
       *
-      * @param string $privateKey
+      * @param string $secretKey
       * @param string $remoteip
       * @param string $challenge
       * @param string $response
@@ -68,10 +72,10 @@ class TrueValidator extends ConstraintValidator
       *
       * @return ReCaptchaResponse
       */
-    private function checkAnswer($privateKey, $remoteip, $challenge, $response, $extra_params = array())
+    private function checkAnswer($secretKey, $remoteip, $challenge, $response, $extra_params = array())
     {
-        if ($remoteip == null || $remoteip == '') {
-            throw new ValidatorException('recaptcha_remote_ip');
+        if ($remoteip == null || $remoteip == "") {
+            throw new ValidatorException("recaptcha_remote_ip");
         }
 
         // discard spam submissions
@@ -79,16 +83,16 @@ class TrueValidator extends ConstraintValidator
             return false;
         }
 
-        $response = $this->httpPost(self::RECAPTCHA_VERIFY_SERVER, '/recaptcha/api/verify', array(
-            'privatekey' => $privateKey,
-            'remoteip'   => $remoteip,
-            'challenge'  => $challenge,
-            'response'   => $response
+        $response = $this->httpPost(self::RECAPTCHA_VERIFY_SERVER, "/recaptcha/api/verify", array(
+            "secretkey" => $secretKey,
+            "remoteip"  => $remoteip,
+            "challenge" => $challenge,
+            "response"  => $response
         ) + $extra_params);
 
         $answers = explode ("\n", $response [1]);
 
-        if (trim($answers[0]) == 'true') {
+        if (trim($answers[0]) == "true") {
             return true;
         }
 
@@ -119,7 +123,7 @@ class TrueValidator extends ConstraintValidator
 
         $response = null;
         if (!$fs = @fsockopen($host, $port, $errno, $errstr, 10)) {
-            throw new ValidatorException('Could not open socket');
+            throw new ValidatorException("Could not open socket");
         }
 
         fwrite($fs, $http_request);
@@ -146,7 +150,7 @@ class TrueValidator extends ConstraintValidator
     {
         $req = null;
         foreach ($data as $key => $value) {
-            $req .= $key.'='.urlencode(stripslashes($value)).'&';
+            $req .= $key."=".urlencode(stripslashes($value))."&";
         }
 
         // cut the last '&'

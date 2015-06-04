@@ -1,17 +1,18 @@
-GoogleRecaptchaBundle
+VihuvacRecaptchaBundle
 ======================
 
-This bundle provides easy reCAPTCHA form field for Symfony.
+This bundle provides easy reCAPTCHA form field for Symfony in order to protect your website from spam and abuse.
 
 ## Installation
 
 ### Step 1: Using Composer (recommended)
 
-To install GoogleRecaptchaBundle with Composer just add the following to your
+To install VihuvacRecaptchaBundle with Composer just add the following to your
 `composer.json` file:
 
 ```js
 // composer.json
+
 {
     // ...
     "require": {
@@ -22,7 +23,7 @@ To install GoogleRecaptchaBundle with Composer just add the following to your
 ```
 
 **NOTE**: Please replace `dev-master` in the snippet above with the latest stable
-branch, for example ``2.0.*``.
+branch, for example ``~1.0``.
 
 Then, you can install the new dependencies by running Composer's ``update``
 command from the directory where your ``composer.json`` file is located:
@@ -36,39 +37,41 @@ for you. All that is left to do is to update your ``AppKernel.php`` file, and
 register the new bundle:
 
 ```php
+// AppKernel::registerBundles()
+
 <?php
 
-// in AppKernel::registerBundles()
 $bundles = array(
     // ...
-    new Google\RecaptchaBundle\GoogleRecaptchaBundle(),
+    new Vihuvac\Bundle\RecaptchaBundle\VihuvacRecaptchaBundle(),
     // ...
 );
 ```
 
-### Step 1 (alternative): Using ``deps`` file (Symfony 2.0.x)
+### Step 1 (alternative): Using ``deps`` file (Symfony 2.0.*)
 
 First, checkout a copy of the code. Just add the following to the ``deps``
 file of your Symfony Standard Distribution:
 
 ```ini
-[GoogleRecaptchaBundle]
-    git=http://github.com/vihuvac/GoogleRecaptchaBundle.git
-    target=/bundles/Google/RecaptchaBundle
+[VihuvacRecaptchaBundle]
+    git=http://github.com/vihuvac/recaptcha-bundle.git
+    target=/bundles/Vihuvac/RecaptchaBundle
 ```
 
 **NOTE**: You can add `version` tag in the snippet above with the latest stable
-branch, for example ``version=origin/2.0``.
+branch, for example ``version=origin/v1.0.0``.
 
 Then register the bundle with your kernel:
 
 ```php
+// AppKernel::registerBundles()
+
 <?php
 
-// in AppKernel::registerBundles()
 $bundles = array(
     // ...
-    new Google\RecaptchaBundle\GoogleRecaptchaBundle(),
+    new Vihuvac\Bundle\RecaptchaBundle\VihuvacRecaptchaBundle(),
     // ...
 );
 ```
@@ -76,12 +79,13 @@ $bundles = array(
 Make sure that you also register the namespace with the autoloader:
 
 ```php
+// app/autoload.php
+
 <?php
 
-// app/autoload.php
 $loader->registerNamespaces(array(
     // ...
-    'Google'  =>  __DIR__.'/../vendor/bundles',
+    'Vihuvac'  =>  __DIR__.'/../vendor/bundles',
     // ...
 ));
 ```
@@ -93,19 +97,19 @@ into your project:
 $ php bin/vendors install
 ```
 
-### Step 1 (alternative): Using submodules (Symfony 2.0.x)
+### Step 1 (alternative): Using submodules (Symfony 2.0.*)
 
 If you're managing your vendor libraries with submodules, first create the
-`vendor/bundles/Google` directory:
+`vendor/bundles/vihuvac` directory:
 
 ``` bash
-$ mkdir -pv vendor/bundles/Google
+$ mkdir -pv vendor/bundles/vihuvac
 ```
 
 Next, add the necessary submodule:
 
 ``` bash
-$ git submodule add git://github.com/vihuvac/GoogleRecaptchaBundle.git vendor/bundles/Google/RecaptchaBundle
+$ git submodule add git://github.com/vihuvac/recaptcha-bundle.git vendor/bundles/vihuvac/recaptcha-bundle
 ```
 
 ### Step2: Configure the autoloader
@@ -113,13 +117,13 @@ $ git submodule add git://github.com/vihuvac/GoogleRecaptchaBundle.git vendor/bu
 Add the following entry to your autoloader:
 
 ``` php
-<?php
 // app/autoload.php
+
+<?php
 
 $loader->registerNamespaces(array(
     // ...
-
-    'Google' => __DIR__.'/../vendor/bundles',
+    'Vihuvac' => __DIR__.'/../vendor/bundles',
 ));
 ```
 
@@ -128,15 +132,15 @@ $loader->registerNamespaces(array(
 Finally, enable the bundle in the kernel:
 
 ``` php
-<?php
 // app/AppKernel.php
+
+<?php
 
 public function registerBundles()
 {
     $bundles = array(
         // ...
-
-        new Google\RecaptchaBundle\GoogleRecaptchaBundle(),
+        new Vihuvac\Bundle\RecaptchaBundle\VihuvacRecaptchaBundle(),
     );
 }
 ```
@@ -148,21 +152,21 @@ Finally, add the following to your config file:
 ``` yaml
 # app/config/config.yml
 
-google_recaptcha:
-    public_key:   here_is_your_public_key
-    private_key:  here_is_your_private_key
-    secure:       false
-    locale_key:   kernel.default_locale
+vihuvac_recaptcha:
+    site_key:   here_is_your_site_key
+    secret_key: here_is_your_secret_key
+    secure:     false
+    locale_key: kernel.default_locale
 ```
 
-**NOTE**: If you use secure url for reCAPTCHA put true in secure (false is the default value).
+**NOTE**: If you want to use the secure URL for the reCAPTCHA, just set ```true``` as value in the secure parameter (__false is the default value__). The ```site_key is``` the same than the ```public_key``` and the ```secret_key``` is the same than the ```private_key```.
 
 You can easily disable reCAPTCHA (for example in a local or test environment):
 
 ``` yaml
 # app/config/config.yml
 
-google_recaptcha:
+vihuvac_recaptcha:
     // ...
     enabled: false
 ```
@@ -179,12 +183,12 @@ When creating a new form class add the following line to create the field:
 public function buildForm(FormBuilder $builder, array $options)
 {
     // ...
-    $builder->add('recaptcha', 'google_recaptcha');
+    $builder->add('recaptcha', 'vihuvac_recaptcha');
     // ...
 }
 ```
 
-You can pass extra options to reCAPTCHA with the "attr > options" option:
+You can pass extra options to reCAPTCHA with the ```attr > options``` option:
 
 ``` php
 <?php
@@ -192,7 +196,7 @@ You can pass extra options to reCAPTCHA with the "attr > options" option:
 public function buildForm(FormBuilder $builder, array $options)
 {
     // ...
-    $builder->add('recaptcha', 'google_recaptcha',
+    $builder->add('recaptcha', 'vihuvac_recaptcha',
         array(
             'attr' => array(
                 'options' => array(
@@ -210,7 +214,7 @@ To validate the field use:
 ``` php
 <?php
 
-use Google\RecaptchaBundle\Validator\Constraints as Recaptcha;
+use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints as Recaptcha;
 
 /**
  * @Recaptcha\True
@@ -220,25 +224,25 @@ public $recaptcha;
 
 Another method would consist to pass the validation constraints as an options of your FormType. This way, your data class contains only meaningful properties.
 If we take the example from above, the buildForm method would look like this.
-Please note that if you set ```mapped=>false``` then the annotation will not work. You have to also set ```constraints```:
+Please note that if you set ```mapped => false``` then the annotation will not work. You have to also set ```constraints```:
 
 ``` php
 <?php
 
-use Google\RecaptchaBundle\Validator\Constraints\True;
+use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\True;
 
 public function buildForm(FormBuilder $builder, array $options)
 {
     // ...
-    $builder->add('recaptcha', 'google_recaptcha',
+    $builder->add('recaptcha', 'vihuvac_recaptcha',
         array(
-            'attr'          => array(
+            'attr' => array(
                 'options' => array(
                     'theme' => 'clean'
                 )
             ),
-            'mapped' => false,
-            'constraints'   => array(
+            'mapped'      => false,
+            'constraints' => array(
                 new True()
             )
         )
@@ -252,7 +256,7 @@ Cool, now you are ready to implement the form widget:
 **PHP**:
 
 ``` php
-<?php $view['form']->setTheme($form, array('GoogleRecaptchaBundle:Form')) ?>
+<?php $view['form']->setTheme($form, array('VihuvacRecaptchaBundle:Form')) ?>
 
 <?php echo $view['form']->widget($form['recaptcha'],
     array(
@@ -268,13 +272,19 @@ Cool, now you are ready to implement the form widget:
 **Twig**:
 
 ``` jinja
-{% form_theme form 'GoogleRecaptchaBundle:Form:google_recaptcha_widget.html.twig' %}
+{% form_theme form 'VihuvacRecaptchaBundle:Form:vihuvac_recaptcha_widget.html.twig' %}
 
-{{ form_widget(form.recaptcha, { 'attr': {
-    'options' : {
-        'theme' : 'clean',
-    },
-} }) }}
+{{
+    form_widget(
+        form.recaptcha, {
+            'attr': {
+                'options' : {
+                    'theme' : 'clean',
+                },
+            }
+        }
+    )
+}}
 ```
 
 If you are not using a form, you can still implement the reCAPTCHA field
@@ -286,8 +296,8 @@ using JavaScript:
 <div id="recaptcha-container"></div>
 <script type="text/javascript">
     $(document).ready(function() {
-        $.getScript("<?php echo \Google\RecaptchaBundle\Form\Type\RecaptchaType::RECAPTCHA_API_JS_SERVER ?>", function() {
-            Recaptcha.create("<?php echo $form['recaptcha']->get('public_key') ?>", "recaptcha-container", {
+        $.getScript("<?php echo \Vihuvac\Bundle\RecaptchaBundle\Form\Type\RecaptchaType::RECAPTCHA_API_JS_SERVER ?>", function() {
+            Recaptcha.create("<?php echo $form['recaptcha']->get('site_key') ?>", "recaptcha-container", {
                 theme: "clean",
             });
         });
@@ -301,8 +311,8 @@ using JavaScript:
 <div id="recaptcha-container"></div>
 <script type="text/javascript">
     $(document).ready(function() {
-        $.getScript("{{ constant('\\Google\\RecaptchaBundle\\Form\\Type\\RecaptchaType::RECAPTCHA_API_JS_SERVER') }}", function() {
-            Recaptcha.create("{{ form.recaptcha.get('public_key') }}", "recaptcha-container", {
+        $.getScript("{{ constant('\\Vihuvac\\Bundle\\RecaptchaBundle\\Form\\Type\\RecaptchaType::RECAPTCHA_API_JS_SERVER') }}", function() {
+            Recaptcha.create("{{ form.recaptcha.get('site_key') }}", "recaptcha-container", {
                 theme: "clean"
             });
         });
@@ -331,17 +341,19 @@ If you want to use a custom theme, put your chunk of code before setting the the
     <div><a href="javascript:Recaptcha.showhelp()">Help</a></div>
 </div>
 
-{% form_theme form 'GoogleRecaptchaBundle:Form:google_recaptcha_widget.html.twig' %}
+{% form_theme form 'VihuvacRecaptchaBundle:Form:google_recaptcha_widget.html.twig' %}
 
-{{ form_widget(form.recaptcha,
-    { 'attr':
-        {
-            'options' : {
-                'theme' : 'custom'
+{{
+    form_widget(
+        form.recaptcha, {
+            'attr': {
+                'options' : {
+                    'theme' : 'custom'
+                }
             }
         }
-    })
+    )
 }}
 ```
 
-**Further reading**: [Customizing the Look and Feel of reCAPTCHA](https://developers.google.com/recaptcha/docs/customization)
+**Further reading**: [Customizing the Look and Feel of reCAPTCHA](https://developers.google.com/recaptcha/old/docs/customization)

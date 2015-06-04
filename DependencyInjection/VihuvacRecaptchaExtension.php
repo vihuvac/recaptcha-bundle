@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Google\RecaptchaBundle\DependencyInjection;
+namespace Vihuvac\Bundle\RecaptchaBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class GoogleRecaptchaExtension extends Extension
+class VihuvacRecaptchaExtension extends Extension
 {
     /**
      * {@inheritDoc}
@@ -31,11 +31,11 @@ class GoogleRecaptchaExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__."/../Resources/config"));
+        $loader->load("services.yml");
 
         foreach ($config as $key => $value) {
-            $container->setParameter('google_recaptcha.'.$key, $value);
+            $container->setParameter("vihuvac_recaptcha.".$key, $value);
         }
 
         $this->registerWidget($container);
@@ -46,22 +46,22 @@ class GoogleRecaptchaExtension extends Extension
      */
     protected function registerWidget(ContainerBuilder $container)
     {
-        $templatingEngines = $container->getParameter('templating.engines');
+        $templatingEngines = $container->getParameter("templating.engines");
 
-        if (in_array('php', $templatingEngines)) {
-            $formRessource = 'GoogleRecaptchaBundle:Form';
+        if (in_array("php", $templatingEngines)) {
+            $formRessource = "VihuvacRecaptchaBundle:Form";
 
-            $container->setParameter('templating.helper.form.resources', array_merge(
-                $container->getParameter('templating.helper.form.resources'),
+            $container->setParameter("templating.helper.form.resources", array_merge(
+                $container->getParameter("templating.helper.form.resources"),
                 array($formRessource)
             ));
         }
 
-        if (in_array('twig', $templatingEngines)) {
-            $formRessource = 'GoogleRecaptchaBundle:Form:google_recaptcha_widget.html.twig';
+        if (in_array("twig", $templatingEngines)) {
+            $formRessource = "VihuvacRecaptchaBundle:Form:vihuvac_recaptcha_widget.html.twig";
 
-            $container->setParameter('twig.form.resources', array_merge(
-                $container->getParameter('twig.form.resources'),
+            $container->setParameter("twig.form.resources", array_merge(
+                $container->getParameter("twig.form.resources"),
                 array($formRessource)
             ));
         }

@@ -9,9 +9,9 @@
 
 #}
 
-{% block google_recaptcha_widget %}
+{% block vihuvac_recaptcha_widget %}
     {% spaceless %}
-        {% if form.vars.google_recaptcha_enabled %}
+        {% if form.vars.vihuvac_recaptcha_enabled %}
             {% if attr.options is defined %}
                 <script type="text/javascript">
                     var RecaptchaOptions = {{ attr.options|json_encode|raw }}
@@ -25,4 +25,4 @@
             </noscript>
         {% endif %}
     {% endspaceless %}
-{% endblock google_recaptcha_widget %}
+{% endblock vihuvac_recaptcha_widget %}
