@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="validate_captcha_value">
                 <source>validate_captcha_value</source>
-                <target>Por favor, introduzca un valor de CAPTCHA válido.</target>
+                <target>Por favor, no se olvide de marcar la casilla de verificación en el reCAPTCHA.</target>
             </trans-unit>
             <trans-unit id="recaptcha_remote_ip">
                 <source>recaptcha_remote_ip</source>

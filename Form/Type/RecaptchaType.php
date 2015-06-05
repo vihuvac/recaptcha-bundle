@@ -95,9 +95,10 @@ class RecaptchaType extends AbstractType
 
         $view->vars = array_replace($view->vars,
             array(
-                "url_challenge" => sprintf("%s/challenge?k=%s", $server, $this->siteKey),
-                "url_noscript"  => sprintf("%s/noscript?k=%s", $server, $this->siteKey),
-                "site_key"      => $this->siteKey
+                "url_challenge"  => sprintf("%s/challenge?k=%s", $server, $this->siteKey),
+                "url_noscript"   => sprintf("%s/noscript?k=%s", $server, $this->siteKey),
+                "url_api_server" => sprintf("%s.js?onload=onloadCallback&render=explicit", $server),
+                "site_key"       => $this->siteKey
             )
         );
     }
@@ -109,13 +110,14 @@ class RecaptchaType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                "compound"      => false,
-                "site_key"      => null,
-                "url_challenge" => null,
-                "url_noscript"  => null,
-                "attr"          => array(
+                "compound"       => false,
+                "site_key"       => null,
+                "url_challenge"  => null,
+                "url_noscript"   => null,
+                "url_api_server" => null,
+                "attr"           => array(
                     "options" => array(
-                        "theme" => "clean",
+                        "theme" => null,
                         "lang"  => $this->language
         	        )
                 )
