@@ -3,7 +3,7 @@ VihuvacRecaptchaBundle
 
 This bundle provides easy reCAPTCHA form field for Symfony in order to protect your website from spam and abuse.
 
-[![License](http://tools.vihuvac.com/images/collection/git-docs/license-mit.svg)](https://packagist.org/packages/vihuvac/recaptcha-bundle)
+[![License](http://tools.vihuvac.com/images/collection/git-docs/license-mit.svg)](https://github.com/vihuvac/recaptcha-bundle/blob/master/LICENSE)
 
 ## Installation
 
