@@ -17,7 +17,7 @@
                     var onloadCallback = function() {
                         grecaptcha.render(
                             "recaptcha", {
-                                "sitekey" : "{{ form.vars.public_key }}",
+                                "sitekey" : "{{ form.vars.site_key }}",
                                 "theme"   : "{{ form.vars.attr.options.theme }}"
                             }
                         );

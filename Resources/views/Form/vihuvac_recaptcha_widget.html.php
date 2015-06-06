@@ -15,7 +15,7 @@
             var onloadCallback = function() {
                 grecaptcha.render(
                     "recaptcha", {
-                        "sitekey" : <?php echo $view["form"]->widget($form["public_key"]) ?>,
+                        "sitekey" : <?php echo $view["form"]->widget($form["site_key"]) ?>,
                         "theme"   : <?php echo $view["form"]->block($form, "widget_attributes") ?>
                     }
                 );
