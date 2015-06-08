@@ -35,7 +35,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode("secret_key")->isRequired()->end()
                 ->booleanNode("secure")->defaultFalse()->end()
                 ->booleanNode("enabled")->defaultTrue()->end()
-                ->scalarNode("locale_key")->defaultValue("kernel.default_locale")->end()
+                ->scalarNode("locale_key")->defaultValue("%kernel.default_locale%")->end()
             ->end()
         ;
 

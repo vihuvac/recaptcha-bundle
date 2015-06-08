@@ -59,7 +59,7 @@ First, checkout a copy of the code. Just add the following to the ```deps``` fil
 
 > **NOTE**:
 >
-> You can add ```version``` tag in the snippet above with the latest stable branch, for example ``version=origin/v2.0.0``.
+> You can add ```version``` tag in the snippet above with the latest stable branch, for example ``version=origin/v2.0.1``.
 
 Then register the bundle with your kernel:
 
@@ -152,7 +152,8 @@ Finally, add the following to your config file:
 vihuvac_recaptcha:
     site_key:   here_is_your_site_key
     secret_key: here_is_your_secret_key
-    secure:     false
+    secure:     true
+    enabled:    true
     locale_key: kernel.default_locale
 ```
 
@@ -160,7 +161,7 @@ vihuvac_recaptcha:
 >
 > If you want to use the secure URL for the reCAPTCHA, just set ```true``` as value in the secure parameter (__false is the default value__).
 >
-> The ```site_key is``` the same than the ```public_key``` and the ```secret_key``` is the same than the ```private_key```.
+> The ```site_key``` parameter is the same than the ```public_key``` parameter and the ```secret_key``` parameter is the same than the ```private_key``` parameter (parameters used in the previous versions).
 
 You can easily disable reCAPTCHA (for example in a local or test environment):
 
@@ -189,7 +190,12 @@ public function buildForm(FormBuilder $builder, array $options)
 }
 ```
 
-You can pass extra options to reCAPTCHA with the ```attr > options``` option, e.g the theme, by default it is light, but you can update it as follows:
+You can pass extra options to reCAPTCHA with the ```attr > options``` option, e.g:
+
+| Tag attribute | Render parameter |     Value     | Default |                Description               |
+| ------------- | :--------------: | :-----------: | :-----: | ---------------------------------------: |
+| data-theme    | theme            | dark / light  | light   | Optional. The color theme of the widget. |
+| data-type     | type             | audio / image | image   | Optional. The type of CAPTCHA to serve.  |
 
 ``` php
 <?php
@@ -201,7 +207,8 @@ public function buildForm(FormBuilder $builder, array $options)
         array(
             "attr" => array(
                 "options" => array(
-                    "theme" => "dark"
+                    "theme" => "light",
+                    "type"  => "audio"
                 )
             )
         )
@@ -239,7 +246,8 @@ public function buildForm(FormBuilder $builder, array $options)
         array(
             "attr" => array(
                 "options" => array(
-                    "theme" => "dark"
+                    "theme" => "light",
+                    "type"  => "audio"
                 )
             ),
             "mapped"      => false,
@@ -263,7 +271,8 @@ Cool, now you are ready to implement the form widget:
     array(
         "attr" => array(
             "options" => array(
-                "theme" => "dark"
+                "theme" => "light",
+                "type"  => "audio"
             )
         )
     ))
@@ -279,8 +288,9 @@ Cool, now you are ready to implement the form widget:
     form_widget(
         form.recaptcha, {
             "attr": {
-                "options" : {
-                    "theme" : "dark",
+                "options": {
+                    "theme": "light",
+                    "type": "audio"
                 },
             }
         }
@@ -299,7 +309,8 @@ using JavaScript:
     $(document).ready(function() {
         $.getScript("<?php echo \Vihuvac\Bundle\RecaptchaBundle\Form\Type\RecaptchaType::RECAPTCHA_API_JS_SERVER ?>", function() {
             Recaptcha.create("<?php echo $form['recaptcha']->get('site_key') ?>", "recaptcha-container", {
-                theme: "dark",
+                theme: "light",
+                type: "audio"
             });
         });
     };
@@ -314,7 +325,8 @@ using JavaScript:
     $(document).ready(function() {
         $.getScript("{{ constant('\\Vihuvac\\Bundle\\RecaptchaBundle\\Form\\Type\\RecaptchaType::RECAPTCHA_API_JS_SERVER') }}", function() {
             Recaptcha.create("{{ form.recaptcha.get('site_key') }}", "recaptcha-container", {
-                theme: "dark"
+                theme: "light",
+                type: "audio"
             });
         });
     });

@@ -15,7 +15,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -28,7 +27,6 @@ class RecaptchaType extends AbstractType
      */
     const RECAPTCHA_API_SERVER        = "http://www.google.com/recaptcha/api";
     const RECAPTCHA_API_SECURE_SERVER = "https://www.google.com/recaptcha/api";
-    const RECAPTCHA_API_JS_SERVER     = "http://www.google.com/recaptcha/api/js/recaptcha_ajax.js";
 
     /**
      * The public key
@@ -62,7 +60,10 @@ class RecaptchaType extends AbstractType
     /**
      * Construct.
      *
-     * @param ContainerInterface $container An ContainerInterface instance
+     * @param string    $siteKey    Recaptcha site key
+     * @param string    $secure     Recaptcha securey api url
+     * @param Boolean   $enabled    Recaptcha status
+     * @param string    $language   Language or locale code
      */
     public function __construct(ContainerInterface $container)
     {
@@ -77,7 +78,8 @@ class RecaptchaType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars = array_replace($view->vars,
+        $view->vars = array_replace(
+            $view->vars,
             array(
                 "vihuvac_recaptcha_enabled" => $this->enabled
             )
@@ -93,12 +95,11 @@ class RecaptchaType extends AbstractType
             $server = self::RECAPTCHA_API_SERVER;
         }
 
-        $view->vars = array_replace($view->vars,
+        $view->vars = array_replace(
+            $view->vars,
             array(
-                "url_challenge"  => sprintf("%s/challenge?k=%s", $server, $this->siteKey),
-                "url_noscript"   => sprintf("%s/noscript?k=%s", $server, $this->siteKey),
-                "url_api_server" => sprintf("%s.js?onload=onloadCallback&render=explicit", $server),
-                "site_key"       => $this->siteKey
+                "url_challenge" => sprintf("%s.js?hl=%s", $server, $this->language),
+                "site_key"      => $this->siteKey
             )
         );
     }
@@ -110,16 +111,14 @@ class RecaptchaType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                "compound"       => false,
-                "site_key"       => null,
-                "url_challenge"  => null,
-                "url_noscript"   => null,
-                "url_api_server" => null,
-                "attr"           => array(
+                "compound"      => false,
+                "site_key"      => null,
+                "url_challenge" => null,
+                "attr"          => array(
                     "options" => array(
                         "theme" => null,
-                        "lang"  => $this->language
-        	        )
+                        "type"  => null
+                    )
                 )
             )
         );

@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
+ * @Target("PROPERTY")
  */
 class True extends Constraint
 {

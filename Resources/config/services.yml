@@ -5,12 +5,19 @@ parameters:
 services:
     vihuvac_recaptcha.form.type:
         class:      "%vihuvac_recaptcha.form.type.class%"
-        arguments:  [ "@service_container" ]
+        arguments:
+            - "@service_container"
+            - "%vihuvac_recaptcha.site_key%"
+            - "%vihuvac_recaptcha.enabled%"
+            - "%vihuvac_recaptcha.locale_key%"
         tags:
             - { name: form.type, alias: vihuvac_recaptcha }
 
     vihuvac_recaptcha.validator.true:
         class:      "%vihuvac_recaptcha.validator.true.class%"
-        arguments:  [ "@service_container" ]
+        arguments:
+            - "@service_container"
+            - "%vihuvac_recaptcha.secret_key%"
+            - "%vihuvac_recaptcha.enabled%"
         tags:
             - { name: validator.constraint_validator, alias: vihuvac_recaptcha.true }
