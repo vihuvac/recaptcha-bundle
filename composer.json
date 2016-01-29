@@ -1,5 +1,5 @@
 {
-    "name": "vihuvac/recaptcha-bundle",
+    "name": "joenivl/recaptcha-bundle",
     "description": "This bundle provides an easy reCAPTCHA form field integration into a Symfony Project",
     "keywords": ["Google", "Recaptcha", "Symfony Bundle", "Vihuvac"],
     "homepage": "https://github.com/vihuvac/recaptcha-bundle.git",
@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "symfony/framework-bundle": "~2"
+        "symfony/framework-bundle": "~3.0"
     },
     "autoload": {
         "psr-4": { "Vihuvac\\Bundle\\RecaptchaBundle\\": "" }
