@@ -9,7 +9,7 @@
 
 #}
 
-{% block vihuvac_recaptcha_widget %}
+{% block recaptcha_widget %}
     {% spaceless %}
         {% if form.vars.vihuvac_recaptcha_enabled %}
             <script src="{{ form.vars.url_challenge }}" type="text/javascript"></script>
@@ -42,4 +42,4 @@
             </noscript>
         {% endif %}
     {% endspaceless %}
-{% endblock vihuvac_recaptcha_widget %}
+{% endblock recaptcha_widget %}
