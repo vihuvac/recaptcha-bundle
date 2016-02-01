@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="nl" datatype="plaintext" original="VihuvacRecaptchaBundle.nl.xliff">
+        <body>
+            <trans-unit id="validate_captcha_value">
+                <source>validate_captcha_value</source>
+                <target>Vink de checkbox aan zodat we zeker weten dat u geen robot bent.</target>
+            </trans-unit>
+            <trans-unit id="recaptcha_remote_ip">
+                <source>recaptcha_remote_ip</source>
+                <target>Wegens veiligheidsredenen moet u het IP adres van reCapchta invoegen.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
