@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * A field for entering a recaptcha text.
@@ -107,7 +107,7 @@ class RecaptchaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             array(
@@ -122,22 +122,6 @@ class RecaptchaType extends AbstractType
                 )
             )
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return "form";
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return "vihuvac_recaptcha";
     }
 
     /**
