@@ -1,3 +1,5 @@
+This is a fork, with some changes to make the bundle compatible with Symfony 3
+
 VihuvacRecaptchaBundle
 ======================
 
