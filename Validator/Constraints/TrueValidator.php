@@ -51,8 +51,8 @@ class TrueValidator extends ConstraintValidator
 
         // define variables for recaptcha check answer
         $secretKey = $this->container->getParameter("vihuvac_recaptcha.secret_key");
-        $remoteip  = $this->container->get("request")->server->get("REMOTE_ADDR");
-        $response  = $this->container->get("request")->get("g-recaptcha-response");
+        $remoteip  = $this->container->get("request_stack")->getCurrentRequest()->server->get("REMOTE_ADDR");
+        $response  = $this->container->get("request_stack")->getCurrentRequest()->get("g-recaptcha-response");
 
         if (!$this->checkAnswer($secretKey, $remoteip, $response)) {
             $this->context->addViolation($constraint->message);
