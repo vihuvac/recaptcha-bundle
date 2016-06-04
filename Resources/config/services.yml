@@ -1,6 +1,7 @@
 parameters:
     vihuvac_recaptcha.form.type.class: Vihuvac\Bundle\RecaptchaBundle\Form\Type\RecaptchaType
     vihuvac_recaptcha.validator.true.class: Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\TrueValidator
+    vihuvac_recaptcha.validator.is_valid.class: Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsValidValidator
 
 services:
     vihuvac_recaptcha.form.type:
@@ -21,3 +22,12 @@ services:
             - "%vihuvac_recaptcha.enabled%"
         tags:
             - { name: validator.constraint_validator, alias: vihuvac_recaptcha.true }
+
+    vihuvac_recaptcha.validator.is_valid:
+        class:      "%vihuvac_recaptcha.validator.is_valid.class%"
+        arguments:
+            - "@service_container"
+            - "%vihuvac_recaptcha.secret_key%"
+            - "%vihuvac_recaptcha.enabled%"
+        tags:
+            - { name: validator.constraint_validator, alias: vihuvac_recaptcha.is_valid }

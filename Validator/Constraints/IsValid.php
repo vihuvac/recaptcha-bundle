@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
  * @Annotation
  * @Target("PROPERTY")
  */
-class True extends Constraint
+class IsValid extends Constraint
 {
     /**
      * The reCAPTCHA validation message
@@ -38,6 +38,6 @@ class True extends Constraint
      */
     public function validatedBy()
     {
-        return "vihuvac_recaptcha.true";
+        return "vihuvac_recaptcha.is_valid";
     }
 }

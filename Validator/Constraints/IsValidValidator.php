@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
-class TrueValidator extends ConstraintValidator
+class IsValidValidator extends ConstraintValidator
 {
     /**
      * The reCAPTCHA server URL's
