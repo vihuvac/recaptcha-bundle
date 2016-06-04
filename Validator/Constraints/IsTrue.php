@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
  * @Annotation
  * @Target("PROPERTY")
  */
-class True extends Constraint
+class IsTrue extends Constraint
 {
     /**
      * The reCAPTCHA validation message

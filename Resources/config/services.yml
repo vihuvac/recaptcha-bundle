@@ -1,10 +1,10 @@
 parameters:
-    vihuvac_recaptcha.form.type.class: Vihuvac\Bundle\RecaptchaBundle\Form\Type\RecaptchaType
-    vihuvac_recaptcha.validator.true.class: Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\TrueValidator
+    vihuvac_recaptcha.form.type.class: Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType
+    vihuvac_recaptcha.validator.true.class: Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsTrueValidator
 
 services:
     vihuvac_recaptcha.form.type:
-        class:      "%vihuvac_recaptcha.form.type.class%"
+        class: "%vihuvac_recaptcha.form.type.class%"
         arguments:
             - "@service_container"
             - "%vihuvac_recaptcha.site_key%"
@@ -14,7 +14,7 @@ services:
             - { name: form.type, alias: vihuvac_recaptcha }
 
     vihuvac_recaptcha.validator.true:
-        class:      "%vihuvac_recaptcha.validator.true.class%"
+        class: "%vihuvac_recaptcha.validator.true.class%"
         arguments:
             - "@service_container"
             - "%vihuvac_recaptcha.secret_key%"

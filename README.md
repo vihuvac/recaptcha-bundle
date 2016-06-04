@@ -7,126 +7,15 @@ This bundle provides easy reCAPTCHA form field for Symfony in order to protect y
 
 ## Installation
 
-### Step 1: Using Composer (recommended)
+### Step 1: Using composer and enable the Bundle
 
-To install VihuvacRecaptchaBundle with Composer just add the following to your ```composer.json``` file:
-
-```js
-// composer.json
-
-{
-    // ...
-    "require": {
-        // ...
-        "vihuvac/recaptcha-bundle": "dev-master"
-    }
-}
-```
-
-> **NOTE**:
->
-> Please replace ```dev-master``` in the snippet above with the latest stable branch, for example ```~2.0```.
-
-Then, you can install the new dependencies by running Composer's ```update``` command from the directory where your ```composer.json``` file is located:
+To install VihuvacRecaptchaBundle with Composer just run via command line (terminal):
 
 ```bash
-$ php composer.phar update
+php composer.phar require vihuvac/recaptcha-bundle
 ```
 
 Now, Composer will automatically download all required files, and install them for you. All that is left to do is to update your ```AppKernel.php``` file, and register the new bundle:
-
-```php
-// AppKernel::registerBundles()
-
-<?php
-
-$bundles = array(
-    // ...
-    new Vihuvac\Bundle\RecaptchaBundle\VihuvacRecaptchaBundle(),
-    // ...
-);
-```
-
-### Step 1 (alternative): Using ```deps``` file (Symfony 2.0.*)
-
-First, checkout a copy of the code. Just add the following to the ```deps``` file of your Symfony Standard Distribution:
-
-```ini
-[VihuvacRecaptchaBundle]
-    git=http://github.com/vihuvac/recaptcha-bundle.git
-    target=/bundles/Vihuvac/RecaptchaBundle
-```
-
-> **NOTE**:
->
-> You can add ```version``` tag in the snippet above with the latest stable branch, for example ``version=origin/v2.0.1``.
-
-Then register the bundle with your kernel:
-
-```php
-// AppKernel::registerBundles()
-
-<?php
-
-$bundles = array(
-    // ...
-    new Vihuvac\Bundle\RecaptchaBundle\VihuvacRecaptchaBundle(),
-    // ...
-);
-```
-
-Make sure that you also register the namespace with the autoloader:
-
-```php
-// app/autoload.php
-
-<?php
-
-$loader->registerNamespaces(array(
-    // ...
-    'Vihuvac'  =>  __DIR__.'/../vendor/bundles',
-    // ...
-));
-```
-
-Now use the ```vendors``` script to clone the newly added repositories into your project:
-
-```bash
-$ php bin/vendors install
-```
-
-### Step 1 (alternative): Using submodules (Symfony 2.0.*)
-
-If you're managing your vendor libraries with submodules, first create the ```vendor/bundles/vihuvac``` directory:
-
-``` bash
-$ mkdir -pv vendor/bundles/vihuvac
-```
-
-Next, add the necessary submodule:
-
-``` bash
-$ git submodule add git://github.com/vihuvac/recaptcha-bundle.git vendor/bundles/vihuvac/recaptcha-bundle
-```
-
-### Step2: Configure the autoloader
-
-Add the following entry to your autoloader:
-
-``` php
-// app/autoload.php
-
-<?php
-
-$loader->registerNamespaces(array(
-    // ...
-    'Vihuvac' => __DIR__.'/../vendor/bundles',
-));
-```
-
-### Step3: Enable the bundle
-
-Finally, enable the bundle in the kernel:
 
 ``` php
 // app/AppKernel.php
@@ -142,9 +31,9 @@ public function registerBundles()
 }
 ```
 
-### Step4: Configure the bundle's
+### Step 2: Configure the bundle
 
-Finally, add the following to your config file:
+Add the following to your config file:
 
 ``` yaml
 # app/config/config.yml
@@ -182,10 +71,12 @@ When creating a new form class add the following line to create the field:
 ``` php
 <?php
 
+use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType;
+
 public function buildForm(FormBuilder $builder, array $options)
 {
     // ...
-    $builder->add("recaptcha", "vihuvac_recaptcha");
+    $builder->add("recaptcha", VihuvacRecaptchaType::class);
     // ...
 }
 ```
@@ -200,10 +91,12 @@ You can pass extra options to reCAPTCHA with the ```attr > options``` option, e.
 ``` php
 <?php
 
+use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType;
+
 public function buildForm(FormBuilder $builder, array $options)
 {
     // ...
-    $builder->add("recaptcha", "vihuvac_recaptcha",
+    $builder->add("recaptcha", VihuvacRecaptchaType::class,
         array(
             "attr" => array(
                 "options" => array(
@@ -225,7 +118,7 @@ To validate the field use:
 use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints as Recaptcha;
 
 /**
- * @Recaptcha\True
+ * @Recaptcha\IsTrue
  */
 public $recaptcha;
 ```
@@ -237,12 +130,13 @@ Please note that if you set ```mapped => false``` then the annotation will not w
 ``` php
 <?php
 
-use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\True;
+use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType;
+use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
 
 public function buildForm(FormBuilder $builder, array $options)
 {
     // ...
-    $builder->add("recaptcha", "vihuvac_recaptcha",
+    $builder->add("recaptcha", VihuvacRecaptchaType::class,
         array(
             "attr" => array(
                 "options" => array(
@@ -252,7 +146,7 @@ public function buildForm(FormBuilder $builder, array $options)
             ),
             "mapped"      => false,
             "constraints" => array(
-                new True()
+                new RecaptchaTrue()
             )
         )
     );
@@ -307,7 +201,7 @@ using JavaScript:
 <div id="recaptcha-container"></div>
 <script type="text/javascript">
     $(document).ready(function() {
-        $.getScript("<?php echo \Vihuvac\Bundle\RecaptchaBundle\Form\Type\RecaptchaType::RECAPTCHA_API_JS_SERVER ?>", function() {
+        $.getScript("<?php echo \Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType::RECAPTCHA_API_JS_SERVER ?>", function() {
             Recaptcha.create("<?php echo $form['recaptcha']->get('site_key') ?>", "recaptcha-container", {
                 theme: "light",
                 type: "audio"
@@ -323,7 +217,7 @@ using JavaScript:
 <div id="recaptcha-container"></div>
 <script type="text/javascript">
     $(document).ready(function() {
-        $.getScript("{{ constant('\\Vihuvac\\Bundle\\RecaptchaBundle\\Form\\Type\\RecaptchaType::RECAPTCHA_API_JS_SERVER') }}", function() {
+        $.getScript("{{ constant('\\Vihuvac\\Bundle\\RecaptchaBundle\\Form\\Type\\VihuvacRecaptchaType::RECAPTCHA_API_JS_SERVER') }}", function() {
             Recaptcha.create("{{ form.recaptcha.get('site_key') }}", "recaptcha-container", {
                 theme: "light",
                 type: "audio"

@@ -12,15 +12,16 @@
 namespace Vihuvac\Bundle\RecaptchaBundle\Form\Type;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * A field for entering a recaptcha text.
  */
-class RecaptchaType extends AbstractType
+class VihuvacRecaptchaType extends AbstractType
 {
     /**
      * The reCAPTCHA server URL's
@@ -107,7 +108,7 @@ class RecaptchaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             array(
@@ -129,13 +130,13 @@ class RecaptchaType extends AbstractType
      */
     public function getParent()
     {
-        return "form";
+        return TextType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return "vihuvac_recaptcha";
     }

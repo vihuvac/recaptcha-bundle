@@ -17,12 +17,15 @@
             "homepage": "https://github.com/vihuvac/recaptcha-bundle/contributors"
         }
     ],
+    "require": {
+        "symfony/framework-bundle": "~2.8|~3.0"
+    },
     "autoload": {
         "psr-4": { "Vihuvac\\Bundle\\RecaptchaBundle\\": "" }
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0-dev"
+            "dev-master": "3.x-dev"
         }
     }
 }
