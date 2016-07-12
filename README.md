@@ -1,6 +1,8 @@
 VihuvacRecaptchaBundle
 ======================
 
+[![Join the chat at https://gitter.im/vihuvac/recaptcha-bundle](https://badges.gitter.im/vihuvac/recaptcha-bundle.svg)](https://gitter.im/vihuvac/recaptcha-bundle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This bundle provides easy reCAPTCHA form field for Symfony in order to protect your website from spam and abuse.
 
 [![License](http://tools.vihuvac.com/images/collection/git-docs/license-mit.svg)](https://github.com/vihuvac/recaptcha-bundle/blob/master/LICENSE)
