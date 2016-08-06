@@ -142,6 +142,14 @@ class VihuvacRecaptchaType extends AbstractType
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return $this->getBlockPrefix();
+    }
+
+    /**
      * Gets the Javascript source URLs.
      *
      * @param string $key The script name
