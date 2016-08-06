@@ -2,14 +2,14 @@
     "name": "vihuvac/recaptcha-bundle",
     "description": "This bundle provides an easy reCAPTCHA form field integration into a Symfony Project",
     "keywords": ["Google", "Recaptcha", "Symfony Bundle", "Vihuvac"],
-    "homepage": "https://github.com/vihuvac/recaptcha-bundle.git",
+    "homepage": "https://github.com/vihuvac/recaptcha-bundle",
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
         {
             "name": "Víctor Hugo Valle Castillo",
             "email": "victouk@gmail.com",
-            "homepage": "http://vihuvac.com",
+            "homepage": "https://vihuvac.com",
             "role": "Developer"
         },
         {
