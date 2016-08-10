@@ -6,9 +6,9 @@ services:
     vihuvac_recaptcha.form.type:
         class: "%vihuvac_recaptcha.form.type.class%"
         arguments:
-            - "@service_container"
             - "%vihuvac_recaptcha.site_key%"
             - "%vihuvac_recaptcha.enabled%"
+            - "%vihuvac_recaptcha.ajax%"
             - "%vihuvac_recaptcha.locale_key%"
         tags:
             - { name: form.type, alias: vihuvac_recaptcha }
@@ -16,8 +16,9 @@ services:
     vihuvac_recaptcha.validator.true:
         class: "%vihuvac_recaptcha.validator.true.class%"
         arguments:
-            - "@service_container"
-            - "%vihuvac_recaptcha.secret_key%"
             - "%vihuvac_recaptcha.enabled%"
+            - "%vihuvac_recaptcha.secret_key%"
+            - "@request_stack"
+            - "%vihuvac_recaptcha.http_proxy%"
         tags:
             - { name: validator.constraint_validator, alias: vihuvac_recaptcha.true }

@@ -41,25 +41,45 @@ Add the following to your config file:
 vihuvac_recaptcha:
     site_key:   here_is_your_site_key
     secret_key: here_is_your_secret_key
-    secure:     true
-    enabled:    true
     locale_key: kernel.default_locale
 ```
 
 > **NOTE**:
 >
-> If you want to use the secure URL for the reCAPTCHA, just set ```true``` as value in the secure parameter (__false is the default value__).
+> This bundle uses a secure API (**HTTPS Protocol**). **Google API** solves the requests by the Browser (**Client**).
 >
 > The ```site_key``` parameter is the same than the ```public_key``` parameter and the ```secret_key``` parameter is the same than the ```private_key``` parameter (parameters used in the previous versions).
 
-You can easily disable reCAPTCHA (for example in a local or test environment):
+You can easily **enable** and **disable** the reCAPTCHA feature using any one of the booleans ```true``` or ```false``` through the **enabled** parameter, e.g:
 
 ``` yaml
 # app/config/config.yml
 
 vihuvac_recaptcha:
     // ...
-    enabled: false
+    enabled: true
+```
+
+You can load the reCAPTCHA using the Ajax API (**optional**):
+
+``` yaml
+# app/config/config.yml
+
+vihuvac_recaptcha:
+    // ...
+    ajax: true
+```
+
+Additionally you can add HTTP Proxy configuration (**optional**):
+
+``` yaml
+# app/config/config.yml
+
+vihuvac_recaptcha:
+    // ...
+    host: proxy.your-domain.com
+    port: 3128
+    auth: proxy_username:proxy_password
 ```
 
 Congratulations! You're ready!
@@ -83,10 +103,14 @@ public function buildForm(FormBuilder $builder, array $options)
 
 You can pass extra options to reCAPTCHA with the ```attr > options``` option, e.g:
 
-| Tag attribute | Render parameter |     Value     | Default |                Description               |
-| ------------- | :--------------: | :-----------: | :-----: | ---------------------------------------: |
-| data-theme    | theme            | dark / light  | light   | Optional. The color theme of the widget. |
-| data-type     | type             | audio / image | image   | Optional. The type of CAPTCHA to serve.  |
+| Tag attribute         | Render parameter |     Value        | Default |                Description               |
+| --------------------- | :--------------: | :--------------: | :-----: | ---------------------------------------: |
+| data-theme            | theme            | dark / light     | light   | Optional. The color theme of the widget. |
+| data-type             | type             | audio / image    | image   | Optional. The type of CAPTCHA to serve.  |
+| data-size             | size             | compact / normal | normal  | Optional. The size of the widget.        |
+| data-expired-callback | expiredCallback  |                  |         | Optional. The name of your callback function to be executed when the recaptcha response expires and the user needs to solve a new CAPTCHA. |
+|                       | defer            | true / false     | false   | Optional for the Ajax API.               |
+|                       | async            | true / false     | false   | Optional for the Ajax API.               |
 
 ``` php
 <?php
@@ -101,7 +125,8 @@ public function buildForm(FormBuilder $builder, array $options)
             "attr" => array(
                 "options" => array(
                     "theme" => "light",
-                    "type"  => "audio"
+                    "type"  => "audio",
+                    "size"  => "normal"
                 )
             )
         )
@@ -141,7 +166,8 @@ public function buildForm(FormBuilder $builder, array $options)
             "attr" => array(
                 "options" => array(
                     "theme" => "light",
-                    "type"  => "audio"
+                    "type"  => "audio",
+                    "size"  => "normal"
                 )
             ),
             "mapped"      => false,
@@ -225,6 +251,42 @@ using JavaScript:
         });
     });
 </script>
+```
+
+**Customization**:
+
+If you want to use a custom theme, put your chunk of code before setting the theme:
+
+```
+<div id="recaptcha_widget">
+    <div id="recaptcha_image"></div>
+    <div class="recaptcha_only_if_incorrect_sol" style="color:red">Incorrect please try again</div>
+
+    <span class="recaptcha_only_if_image">Enter the words above:</span>
+    <span class="recaptcha_only_if_audio">Enter the numbers you hear:</span>
+
+    <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" />
+
+    <div><a href="javascript:Recaptcha.reload()">Get another CAPTCHA</a></div>
+    <div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type("audio")">Get an audio CAPTCHA</a></div>
+    <div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type("image")">Get an image CAPTCHA</a></div>
+
+    <div><a href="javascript:Recaptcha.showhelp()">Help</a></div>
+ </div>
+
+{% form_theme form "VihuvacRecaptchaBundle:Form:vihuvac_recaptcha_widget.html.twig %}
+
+{{
+    form_widget(
+        form.recaptcha, {
+            "attr": {
+                "options" : {
+                    "theme" : "custom",
+                },
+            }
+        }
+    )
+}}
 ```
 
 **Further reading**: [Google Official Documentation](https://developers.google.com/recaptcha/docs/start)

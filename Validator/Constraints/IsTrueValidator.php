@@ -11,7 +11,7 @@
 
 namespace Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ValidatorException;
@@ -21,22 +21,50 @@ class IsTrueValidator extends ConstraintValidator
     /**
      * The reCAPTCHA server URL's
      */
-    const RECAPTCHA_VERIFY_SERVER = "https://www.google.com/recaptcha/api/siteverify";
+    const RECAPTCHA_VERIFY_SERVER = "https://www.google.com";
 
-    /**
-     * @var container
-     */
-    protected $container;
+	/**
+	 * Enable reCaptcha
+	 *
+	 * @var Boolean
+	 */
+	protected $enabled;
+
+	/**
+	 * Recaptcha Private Key
+	 *
+	 * @var Boolean
+	 */
+	protected $secretKey;
+
+	/**
+	 * Request Stack
+	 *
+	 * @var RequestStack
+	 */
+	protected $requestStack;
+
+	/**
+	 * HTTP Proxy informations
+	 * @var Array
+	 */
+	protected $httpProxy;
 
 
     /**
      * Construct.
      *
-     * @param ContainerInterface $container An ContainerInterface instance
+     * @param Boolean      $enabled
+     * @param string       $secretKey
+     * @param RequestStack $requestStack
+     * @param array        $httpProxy
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct($enabled, $secretKey, RequestStack $requestStack, array $httpProxy)
     {
-        $this->container = $container;
+	    $this->enabled      = $enabled;
+	    $this->secretKey    = $secretKey;
+	    $this->requestStack = $requestStack;
+	    $this->httpProxy    = $httpProxy;
     }
 
     /**
@@ -45,16 +73,17 @@ class IsTrueValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         // if recaptcha is disabled, always valid
-        if (!$this->container->getParameter("vihuvac_recaptcha.enabled")) {
+        if (!$this->enabled) {
             return true;
         }
 
         // define variables for recaptcha check answer
-        $secretKey = $this->container->getParameter("vihuvac_recaptcha.secret_key");
-        $remoteip  = $this->container->get("request")->server->get("REMOTE_ADDR");
-        $response  = $this->container->get("request")->get("g-recaptcha-response");
+	    $remoteip = $this->requestStack->getMasterRequest()->getClientIp();
+	    $response = $this->requestStack->getMasterRequest()->get("g-recaptcha-response");
 
-        if (!$this->checkAnswer($secretKey, $remoteip, $response)) {
+	    $isValid = $this->checkAnswer($this->secretKey, $remoteip, $response);
+
+        if (!$isValid) {
             $this->context->addViolation($constraint->message);
         }
     }
@@ -73,7 +102,7 @@ class IsTrueValidator extends ConstraintValidator
     private function checkAnswer($secretKey, $remoteip, $response)
     {
         if ($remoteip == null || $remoteip == "") {
-            throw new ValidatorException("recaptcha_remote_ip");
+            throw new ValidatorException("vihuvac_recaptcha.validator.remote_ip");
         }
 
         // discard spam submissions
@@ -82,76 +111,63 @@ class IsTrueValidator extends ConstraintValidator
         }
 
 
-        $response = $this->getCurlRequest(self::RECAPTCHA_VERIFY_SERVER, $secretKey, $remoteip, $response);
+	    $response = $this->httpGet(self::RECAPTCHA_VERIFY_SERVER, "/recaptcha/api/siteverify", array(
+		    "secret"   => $secretKey,
+		    "remoteip" => $remoteip,
+		    "response" => $response
+	    ));
 
-        $answer = json_decode($response, true);
+	    $response = json_decode($response, true);
 
-        if ($answer["success"] == true) {
-            return true;
-        }
+	    if ($response["success"] == true) {
+		    return true;
+	    }
 
         return false;
     }
 
-    /**
-     * Submit the cURL request with the specified parameters.
-     *
-     * @param string $url
-     * @param string $secretKey
-     * @param string $remoteip
-     * @param string $response
-     *
-     * @return string Body of the reCAPTCHA response
-     */
-    private function getCurlRequest($url, $secretKey, $remoteip, $response)
-    {
-        $handle = curl_init($url);
+	/**
+	 * Submits an HTTP POST to a reCAPTCHA server.
+	 *
+	 * @param string $host
+	 * @param string $path
+	 * @param array  $data
+	 *
+	 * @return array response
+	 */
+	private function httpGet($host, $path, $data)
+	{
+		$host = sprintf("%s%s?%s", $host, $path, http_build_query($data));
 
-        $options = array(
-            CURLOPT_POST           => true,
-            CURLOPT_POSTFIELDS     => $this->toQueryString($secretKey, $remoteip, $response),
-            CURLOPT_HTTPHEADER     => array("Content-Type: application/x-www-form-urlencoded"),
-            CURLINFO_HEADER_OUT    => false,
-            CURLOPT_HEADER         => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_SSL_VERIFYPEER => true
-        );
+		$context = $this->getResourceContext();
 
-        curl_setopt_array($handle, $options);
+		return file_get_contents($host, false, $context);
+	}
 
-        $response = curl_exec($handle);
+	/**
+	 * Resource context.
+	 *
+	 * @return resource context for HTTP Proxy.
+	 */
+	private function getResourceContext()
+	{
+		if (null === $this->httpProxy["host"] || null === $this->httpProxy["port"]) {
+			return null;
+		}
 
-        curl_close($handle);
+		$options = array();
+		foreach (array("http", "https") as $protocol) {
+			$options[$protocol] = array(
+				"method"          => "GET",
+				"proxy"           => sprintf("tcp://%s:%s", $this->httpProxy["host"], $this->httpProxy["port"]),
+				"request_fulluri" => true,
+			);
 
-        return $response;
-    }
+			if (null !== $this->httpProxy["auth"]) {
+				$options[$protocol]["header"] = sprintf("Proxy-Authorization: Basic %s", base64_encode($this->httpProxy["auth"]));
+			}
+		}
 
-    /**
-     * Array representation.
-     *
-     * @return array Array formatted parameters.
-     */
-    private function toArray($secretKey, $remoteip, $response)
-    {
-        $params = array(
-            "secret"   => $secretKey,
-            "response" => $response
-        );
-
-        if (!is_null($remoteip)) {
-            $params["remoteip"] = $remoteip;
-        }
-
-        return $params;
-    }
-
-    /**
-     * Query string representation for HTTP request.
-     *
-     * @return string Query string formatted parameters.
-     */
-    private function toQueryString($secretKey, $remoteip, $response)
-    {
-        return http_build_query($this->toArray($secretKey, $remoteip, $response), "", "&");
-    }
+		return stream_context_create($options);
+	}
 }

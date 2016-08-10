@@ -22,7 +22,7 @@ class IsTrue extends Constraint
     /**
      * The reCAPTCHA validation message
      */
-    public $message = "validate_captcha_value";
+    public $message = "vihuvac_recaptcha.validator.message";
 
 
     /**

@@ -1,0 +1,4 @@
+vihuvac_recaptcha:
+    validator:
+        message: Veuillez cliquez sur la case à cocher du reCAPTCHA.
+        remote_ip: Pour des raisons de sécurité, vous devez passer l'IP Distante à reCAPTCHA.

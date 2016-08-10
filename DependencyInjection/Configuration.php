@@ -11,6 +11,7 @@
 
 namespace Vihuvac\Bundle\RecaptchaBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -33,12 +34,33 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode("site_key")->isRequired()->end()
                 ->scalarNode("secret_key")->isRequired()->end()
-                ->booleanNode("secure")->defaultFalse()->end()
                 ->booleanNode("enabled")->defaultTrue()->end()
+	            ->booleanNode("ajax")->defaultFalse()->end()
                 ->scalarNode("locale_key")->defaultValue("%kernel.default_locale%")->end()
             ->end()
         ;
 
+	    $this->addHttpClientConfiguration($rootNode);
+
         return $treeBuilder;
     }
+
+	/**
+	 * {@inheritDoc}
+	 */
+	private function addHttpClientConfiguration(ArrayNodeDefinition $node)
+	{
+		$node
+			->children()
+				->arrayNode("http_proxy")
+					->addDefaultsIfNotSet()
+					->children()
+						->scalarNode("host")->defaultValue(null)->end()
+						->scalarNode("port")->defaultValue(null)->end()
+						->scalarNode("auth")->defaultValue(null)->end()
+					->end()
+				->end()
+			->end()
+		;
+	}
 }

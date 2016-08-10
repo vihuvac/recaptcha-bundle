@@ -11,7 +11,6 @@
 
 namespace Vihuvac\Bundle\RecaptchaBundle\Form\Type;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -24,10 +23,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class VihuvacRecaptchaType extends AbstractType
 {
     /**
-     * The reCAPTCHA server URL's
+     * The reCAPTCHA Server URL's
      */
-    const RECAPTCHA_API_SERVER        = "http://www.google.com/recaptcha/api";
-    const RECAPTCHA_API_SECURE_SERVER = "https://www.google.com/recaptcha/api";
+    const RECAPTCHA_API_SERVER    = "https://www.google.com/recaptcha/api";
+	const RECAPTCHA_API_JS_SERVER = "https://www.google.com/recaptcha/api/js/recaptcha_ajax.js";
 
     /**
      * The public key
@@ -36,12 +35,12 @@ class VihuvacRecaptchaType extends AbstractType
      */
     protected $siteKey;
 
-    /**
-     * Use secure url?
-     *
-     * @var Boolean
-     */
-    protected $secure;
+	/**
+	 * Use AJAX API
+	 *
+	 * @var Boolean
+	 */
+	protected $ajax;
 
     /**
      * Enable recaptcha?
@@ -62,16 +61,16 @@ class VihuvacRecaptchaType extends AbstractType
      * Construct.
      *
      * @param string    $siteKey    Recaptcha site key
-     * @param string    $secure     Recaptcha securey api url
      * @param Boolean   $enabled    Recaptcha status
+     * @param Boolean   $ajax       Ajax status
      * @param string    $language   Language or locale code
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct($siteKey, $enabled, $ajax, $language)
     {
-        $this->siteKey  = $container->getParameter("vihuvac_recaptcha.site_key");
-        $this->secure   = $container->getParameter("vihuvac_recaptcha.secure");
-        $this->enabled  = $container->getParameter("vihuvac_recaptcha.enabled");
-        $this->language = $container->getParameter("vihuvac_recaptcha.locale_key");
+        $this->siteKey  = $siteKey;
+        $this->enabled  = $enabled;
+	    $this->ajax     = $ajax;
+        $this->language = $language;
     }
 
     /**
@@ -79,30 +78,30 @@ class VihuvacRecaptchaType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars = array_replace(
-            $view->vars,
-            array(
-                "vihuvac_recaptcha_enabled" => $this->enabled
-            )
-        );
+        $view->vars = array_replace($view->vars, array(
+            "vihuvac_recaptcha_enabled" => $this->enabled,
+            "vihuvac_recaptcha_ajax"    => $this->ajax
+        ));
 
         if (!$this->enabled) {
             return;
         }
 
-        if ($this->secure) {
-            $server = self::RECAPTCHA_API_SECURE_SERVER;
-        } else {
-            $server = self::RECAPTCHA_API_SERVER;
-        }
+	    if (!isset($options["language"])) {
+		    $options["language"] = $this->language;
+	    }
 
-        $view->vars = array_replace(
-            $view->vars,
-            array(
-                "url_challenge" => sprintf("%s.js?hl=%s", $server, $this->language),
-                "site_key"      => $this->siteKey
-            )
-        );
+        if (!$this->ajax) {
+	        $view->vars = array_replace($view->vars, array(
+		        "url_challenge" => sprintf("%s.js?hl=%s", self::RECAPTCHA_API_SERVER, $options["language"]),
+		        "site_key"      => $this->siteKey
+	        ));
+        } else {
+	        $view->vars = array_replace($view->vars, array(
+		        "url_api"  => self::RECAPTCHA_API_JS_SERVER,
+		        "site_key" => $this->siteKey
+	        ));
+        }
     }
 
     /**
@@ -113,12 +112,18 @@ class VihuvacRecaptchaType extends AbstractType
         $resolver->setDefaults(
             array(
                 "compound"      => false,
+	            "language"      => $this->language,
                 "site_key"      => null,
                 "url_challenge" => null,
+	            "url_noscript"  => null,
                 "attr"          => array(
                     "options" => array(
-                        "theme" => null,
-                        "type"  => null
+                        "theme"           => "light",
+	                    "type"            => "image",
+	                    "size"            => "normal",
+	                    "expiredCallback" => null,
+	                    "defer"           => false,
+	                    "async"           => false,
                     )
                 )
             )

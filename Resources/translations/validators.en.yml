@@ -1,0 +1,4 @@
+vihuvac_recaptcha:
+    validator:
+        message: Please, don't forget to tick the checkbox in the reCAPTCHA field.
+        remote_ip: For security reasons, you must pass the Remote IP to reCAPTCHA.
