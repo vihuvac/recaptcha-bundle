@@ -71,7 +71,7 @@ class VihuvacRecaptchaType extends AbstractType
         $this->siteKey  = $container->getParameter("vihuvac_recaptcha.site_key");
         $this->secure   = $container->getParameter("vihuvac_recaptcha.secure");
         $this->enabled  = $container->getParameter("vihuvac_recaptcha.enabled");
-        $this->language = $container->getParameter($container->getParameter("vihuvac_recaptcha.locale_key"));
+        $this->language = $container->getParameter("vihuvac_recaptcha.locale_key");
     }
 
     /**
