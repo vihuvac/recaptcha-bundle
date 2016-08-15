@@ -19,6 +19,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * A field for entering a recaptcha text.
+ *
+ * @package Vihuvac\Bundle\RecaptchaBundle\Form\Type
  */
 class VihuvacRecaptchaType extends AbstractType
 {
@@ -26,7 +28,7 @@ class VihuvacRecaptchaType extends AbstractType
      * The reCAPTCHA Server URL's
      */
     const RECAPTCHA_API_SERVER    = "https://www.google.com/recaptcha/api";
-	const RECAPTCHA_API_JS_SERVER = "https://www.google.com/recaptcha/api/js/recaptcha_ajax.js";
+    const RECAPTCHA_API_JS_SERVER = "https://www.google.com/recaptcha/api/js/recaptcha_ajax.js";
 
     /**
      * The public key
@@ -35,12 +37,12 @@ class VihuvacRecaptchaType extends AbstractType
      */
     protected $siteKey;
 
-	/**
-	 * Use AJAX API
-	 *
-	 * @var Boolean
-	 */
-	protected $ajax;
+    /**
+     * Use AJAX API
+     *
+     * @var Boolean
+     */
+    protected $ajax;
 
     /**
      * Enable recaptcha?
@@ -56,7 +58,6 @@ class VihuvacRecaptchaType extends AbstractType
      */
     protected $language;
 
-
     /**
      * Construct.
      *
@@ -69,7 +70,7 @@ class VihuvacRecaptchaType extends AbstractType
     {
         $this->siteKey  = $siteKey;
         $this->enabled  = $enabled;
-	    $this->ajax     = $ajax;
+        $this->ajax     = $ajax;
         $this->language = $language;
     }
 
@@ -87,20 +88,20 @@ class VihuvacRecaptchaType extends AbstractType
             return;
         }
 
-	    if (!isset($options["language"])) {
-		    $options["language"] = $this->language;
-	    }
+        if (!isset($options["language"])) {
+            $options["language"] = $this->language;
+        }
 
         if (!$this->ajax) {
-	        $view->vars = array_replace($view->vars, array(
-		        "url_challenge" => sprintf("%s.js?hl=%s", self::RECAPTCHA_API_SERVER, $options["language"]),
-		        "site_key"      => $this->siteKey
-	        ));
+            $view->vars = array_replace($view->vars, array(
+                "url_challenge" => sprintf("%s.js?hl=%s", self::RECAPTCHA_API_SERVER, $options["language"]),
+                "site_key"      => $this->siteKey
+            ));
         } else {
-	        $view->vars = array_replace($view->vars, array(
-		        "url_api"  => self::RECAPTCHA_API_JS_SERVER,
-		        "site_key" => $this->siteKey
-	        ));
+            $view->vars = array_replace($view->vars, array(
+                "url_api"  => self::RECAPTCHA_API_JS_SERVER,
+                "site_key" => $this->siteKey
+            ));
         }
     }
 
@@ -112,18 +113,18 @@ class VihuvacRecaptchaType extends AbstractType
         $resolver->setDefaults(
             array(
                 "compound"      => false,
-	            "language"      => $this->language,
+                "language"      => $this->language,
                 "site_key"      => null,
                 "url_challenge" => null,
-	            "url_noscript"  => null,
+                "url_noscript"  => null,
                 "attr"          => array(
                     "options" => array(
                         "theme"           => "light",
-	                    "type"            => "image",
-	                    "size"            => "normal",
-	                    "expiredCallback" => null,
-	                    "defer"           => false,
-	                    "async"           => false,
+                        "type"            => "image",
+                        "size"            => "normal",
+                        "expiredCallback" => null,
+                        "defer"           => false,
+                        "async"           => false,
                     )
                 )
             )
@@ -135,7 +136,7 @@ class VihuvacRecaptchaType extends AbstractType
      */
     public function getParent()
     {
-        return TextType::class;
+        return 'text';
     }
 
     /**
@@ -143,7 +144,7 @@ class VihuvacRecaptchaType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return "vihuvac_recaptcha";
+        return 'vihuvac_recaptcha';
     }
 
     /**
