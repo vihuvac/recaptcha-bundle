@@ -1,24 +1,24 @@
 parameters:
-    vihuvac_recaptcha.form.type.class: Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType
-    vihuvac_recaptcha.validator.true.class: Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsTrueValidator
+    vihuvac_recaptcha.form.type.class: 'Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType'
+    vihuvac_recaptcha.validator.true.class: 'Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsTrueValidator'
 
 services:
     vihuvac_recaptcha.form.type:
-        class: "%vihuvac_recaptcha.form.type.class%"
+        class: '%vihuvac_recaptcha.form.type.class%'
         arguments:
-            - "%vihuvac_recaptcha.site_key%"
-            - "%vihuvac_recaptcha.enabled%"
-            - "%vihuvac_recaptcha.ajax%"
-            - "%vihuvac_recaptcha.locale_key%"
+            - '%vihuvac_recaptcha.site_key%'
+            - '%vihuvac_recaptcha.enabled%'
+            - '%vihuvac_recaptcha.ajax%'
+            - '%vihuvac_recaptcha.locale_key%'
         tags:
-            - { name: form.type, alias: vihuvac_recaptcha }
+            - { name: 'form.type', alias: 'vihuvac_recaptcha' }
 
     vihuvac_recaptcha.validator.true:
-        class: "%vihuvac_recaptcha.validator.true.class%"
+        class: '%vihuvac_recaptcha.validator.true.class%'
         arguments:
-            - "%vihuvac_recaptcha.enabled%"
-            - "%vihuvac_recaptcha.secret_key%"
-            - "@request_stack"
-            - "%vihuvac_recaptcha.http_proxy%"
+            - '%vihuvac_recaptcha.enabled%'
+            - '%vihuvac_recaptcha.secret_key%'
+            - '@request_stack'
+            - '%vihuvac_recaptcha.http_proxy%'
         tags:
-            - { name: validator.constraint_validator, alias: vihuvac_recaptcha.true }
+            - { name: 'validator.constraint_validator', alias: 'vihuvac_recaptcha.true' }
