@@ -78,8 +78,8 @@ class IsTrueValidator extends ConstraintValidator
         }
 
         // define variables for recaptcha check answer
-	    $remoteip = $this->requestStack->getMasterRequest()->getClientIp();
-	    $response = $this->requestStack->getMasterRequest()->get("g-recaptcha-response");
+	    $remoteip  = $this->container->get('request_stack')->getCurrentRequest()->server->get("REMOTE_ADDR");
+            $response  = $this->container->get('request_stack')->getCurrentRequest()->get("g-recaptcha-response");
 
 	    $isValid = $this->checkAnswer($this->secretKey, $remoteip, $response);
 
