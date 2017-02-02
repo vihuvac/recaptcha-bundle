@@ -137,7 +137,7 @@ class IsTrueValidator extends ConstraintValidator
 	 */
 	private function httpGet($host, $path, $data)
 	{
-		$host = sprintf("%s%s?%s", $host, $path, http_build_query($data));
+		$host = sprintf("%s%s?%s", $host, $path, http_build_query($data, null, '&'));
 
 		$context = $this->getResourceContext();
 
