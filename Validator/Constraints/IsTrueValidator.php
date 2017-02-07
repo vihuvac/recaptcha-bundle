@@ -105,11 +105,13 @@ class IsTrueValidator extends ConstraintValidator
             throw new ValidatorException("vihuvac_recaptcha.validator.remote_ip");
         }
 
-        // discard spam submissions
-        if ($response == null || strlen($response) == 0) {
-            return false;
+        if ($response === null) { // wasn't show before send
+            return true;
         }
 
+        if ((string)$response === "") { // wasn't checked by robot
+            return false;
+        }
 
 	    $response = $this->httpGet(self::RECAPTCHA_VERIFY_SERVER, "/recaptcha/api/siteverify", array(
 		    "secret"   => $secretKey,
