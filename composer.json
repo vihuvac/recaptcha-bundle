@@ -19,7 +19,7 @@
     ],
     "require": {
         "php": "^5.3 || ^7.0",
-        "symfony/symfony": "^2.3"
+        "symfony/symfony": "^2.3 || ^3.0"
     },
     "autoload": {
         "psr-4": { "Vihuvac\\Bundle\\RecaptchaBundle\\": "" }
