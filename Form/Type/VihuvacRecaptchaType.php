@@ -133,14 +133,6 @@ class VihuvacRecaptchaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
-    {
-        return TextType::class ? "form" : "text";
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return "vihuvac_recaptcha";
