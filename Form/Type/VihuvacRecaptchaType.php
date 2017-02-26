@@ -11,6 +11,7 @@
 
 namespace Vihuvac\Bundle\RecaptchaBundle\Form\Type;
 
+use Vihuvac\Bundle\RecaptchaBundle\Locale\LocaleResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -31,9 +32,16 @@ class VihuvacRecaptchaType extends AbstractType
     /**
      * The public key
      *
-     * @var string
+     * @var String
      */
     protected $siteKey;
+
+    /**
+     * Enable recaptcha?
+     *
+     * @var Boolean
+     */
+    protected $enabled;
 
 	/**
 	 * Use AJAX API
@@ -43,34 +51,27 @@ class VihuvacRecaptchaType extends AbstractType
 	protected $ajax;
 
     /**
-     * Enable recaptcha?
-     *
-     * @var Boolean
-     */
-    protected $enabled;
-
-    /**
      * Language
      *
-     * @var string
+     * @var String
      */
-    protected $language;
+    protected $localeResolver;
 
 
     /**
      * Construct.
      *
-     * @param string    $siteKey    Recaptcha site key
-     * @param Boolean   $enabled    Recaptcha status
-     * @param Boolean   $ajax       Ajax status
-     * @param string    $language   Language or locale code
+     * @param String    $siteKey            Recaptcha site key
+     * @param Boolean   $enabled            Recaptcha status
+     * @param Boolean   $ajax               Ajax status
+     * @param String    $$localeResolver    Language or locale code
      */
-    public function __construct($siteKey, $enabled, $ajax, $language)
+    public function __construct($siteKey, $enabled, $ajax, LocaleResolver $localeResolver)
     {
-        $this->siteKey  = $siteKey;
-        $this->enabled  = $enabled;
-	    $this->ajax     = $ajax;
-        $this->language = $language;
+        $this->siteKey        = $siteKey;
+        $this->enabled        = $enabled;
+        $this->ajax           = $ajax;
+        $this->localeResolver = $localeResolver;
     }
 
     /**
@@ -88,7 +89,7 @@ class VihuvacRecaptchaType extends AbstractType
         }
 
 	    if (!isset($options["language"])) {
-		    $options["language"] = $this->language;
+		    $options["language"] = $this->localeResolver->resolve();
 	    }
 
         if (!$this->ajax) {
@@ -112,7 +113,7 @@ class VihuvacRecaptchaType extends AbstractType
         $resolver->setDefaults(
             array(
                 "compound"      => false,
-	            "language"      => $this->language,
+	            "language"      => $this->localeResolver->resolve(),
                 "site_key"      => null,
                 "url_challenge" => null,
 	            "url_noscript"  => null,
@@ -121,9 +122,10 @@ class VihuvacRecaptchaType extends AbstractType
                         "theme"           => "light",
 	                    "type"            => "image",
 	                    "size"            => "normal",
+                        "callback"        => null,
 	                    "expiredCallback" => null,
 	                    "defer"           => false,
-	                    "async"           => false,
+	                    "async"           => false
                     )
                 )
             )
@@ -157,9 +159,9 @@ class VihuvacRecaptchaType extends AbstractType
     /**
      * Gets the Javascript source URLs.
      *
-     * @param string $key The script name
+     * @param String $key The script name
      *
-     * @return string The javascript source URL
+     * @return String The javascript source URL
      */
     public function getScriptURL($key)
     {
@@ -169,7 +171,7 @@ class VihuvacRecaptchaType extends AbstractType
     /**
      * Gets the public key.
      *
-     * @return string The javascript source URL
+     * @return String The javascript source URL
      */
     public function getSiteKey()
     {

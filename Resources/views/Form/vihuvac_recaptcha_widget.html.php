@@ -18,6 +18,9 @@
             data-type="<?php echo $attr['options']['type'] ?>"
             data-size="<?php echo $attr['options']['size'] ?>"
             data-sitekey="<?php echo $site_key ?>"
+            <?php if (isset($attr['options']['callback'])): ?>
+                data-callback="<?php echo $attr['options']['callback'] ?>"
+            <?php endif ?>
             <?php if (isset($attr['options']['expiredCallback'])): ?>
                 data-expired-callback="<?php echo $attr['options']['expiredCallback'] ?>"
             <?php endif ?>

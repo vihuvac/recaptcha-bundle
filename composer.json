@@ -19,10 +19,20 @@
     ],
     "require": {
         "php": "^5.3 || ^7.0",
-        "symfony/symfony": "^2.3"
+        "symfony/symfony": "^2.3 || ^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.3"
     },
     "autoload": {
-        "psr-4": { "Vihuvac\\Bundle\\RecaptchaBundle\\": "" }
+        "psr-4": {
+            "Vihuvac\\Bundle\\RecaptchaBundle\\": ""
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Vihuvac\\Bundle\\RecaptchaBundle\\Tests\\": "Tests"
+        }
     },
     "extra": {
         "branch-alias": {

@@ -1,2 +1,11 @@
+### FS
 .DS_Store
 *.php~
+
+### Composer
+composer.lock
+composer.phar
+vendor/*
+
+### PHPUnit
+phpunit.xml

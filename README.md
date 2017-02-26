@@ -60,6 +60,16 @@ vihuvac_recaptcha:
     enabled: true
 ```
 
+If you want to use the language used by the locale request as the language for the reCAPTCHA, you must activate the resolver (deactivated by default):
+
+``` yaml
+# app/config/config.yml
+
+vihuvac_recaptcha:
+    // ...
+    locale_from_request: true
+```
+
 You can load the reCAPTCHA using the Ajax API (**optional**):
 
 ``` yaml
@@ -80,6 +90,15 @@ vihuvac_recaptcha:
     host: proxy.your-domain.com
     port: 3128
     auth: proxy_username:proxy_password
+```
+In case you have turned off the domain name checking on reCAPTCHA's end, you'll need to check the origin of the response by enabling the ```verify_host``` option:
+
+``` yaml
+# app/config/config.yml
+
+vihuvac_recaptcha:
+    // ...
+    verify_host: true
 ```
 
 Congratulations! You're ready!

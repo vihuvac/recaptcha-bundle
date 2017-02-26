@@ -24,6 +24,9 @@
                     data-type="{{ attr.options.type }}"
                     data-size="{{ attr.options.size }}"
                     data-sitekey="{{ form.vars.site_key }}"
+                    {%- if attr.options.callback is defined %}
+                        data-callback="{{ attr.options.callback }}"
+                    {% endif -%}
                     {% if attr.options.expiredCallback is defined %}
                         data-expired-callback="{{ attr.options.expiredCallback }}"
                     {% endif %}

@@ -35,8 +35,10 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode("site_key")->isRequired()->end()
                 ->scalarNode("secret_key")->isRequired()->end()
                 ->booleanNode("enabled")->defaultTrue()->end()
-	            ->booleanNode("ajax")->defaultFalse()->end()
+                ->booleanNode("verify_host")->defaultFalse()->end()
+                ->booleanNode("ajax")->defaultFalse()->end()
                 ->scalarNode("locale_key")->defaultValue("%kernel.default_locale%")->end()
+                ->booleanNode("locale_from_request")->defaultFalse()->end()
             ->end()
         ;
 

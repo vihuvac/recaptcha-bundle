@@ -50,21 +50,30 @@ class IsTrueValidator extends ConstraintValidator
 	 */
 	protected $httpProxy;
 
+    /**
+     * Enable serverside host check.
+     *
+     * @var Boolean
+     */
+    protected $verifyHost;
+
 
     /**
      * Construct.
      *
      * @param Boolean      $enabled
-     * @param string       $secretKey
+     * @param String       $secretKey
      * @param RequestStack $requestStack
-     * @param array        $httpProxy
+     * @param Array        $httpProxy
+     * @param Boolean      $verifyHost
      */
-    public function __construct($enabled, $secretKey, RequestStack $requestStack, array $httpProxy)
+    public function __construct($enabled, $secretKey, RequestStack $requestStack, array $httpProxy, $verifyHost)
     {
 	    $this->enabled      = $enabled;
 	    $this->secretKey    = $secretKey;
 	    $this->requestStack = $requestStack;
 	    $this->httpProxy    = $httpProxy;
+        $this->verifyHost   = $verifyHost;
     }
 
     /**
@@ -77,23 +86,27 @@ class IsTrueValidator extends ConstraintValidator
             return true;
         }
 
-        // define variables for recaptcha check answer
-	    $remoteip = $this->requestStack->getMasterRequest()->getClientIp();
-	    $response = $this->requestStack->getMasterRequest()->get("g-recaptcha-response");
+        // define variable for recaptcha check answer.
+        $masterRequest = $this->requestStack->getMasterRequest();
+        $remoteip      = $masterRequest->getClientIp();
+        $response      = $masterRequest->get("g-recaptcha-response");
 
 	    $isValid = $this->checkAnswer($this->secretKey, $remoteip, $response);
 
-        if (!$isValid) {
+        if ($isValid["success"] !== true) {
             $this->context->addViolation($constraint->message);
+        // Perform server side hostname check
+        } elseif ($this->verifyHost && $isValid["hostname"] !== $masterRequest->getHost()) {
+            $this->context->addViolation($constraint->invalidHostMessage);
         }
     }
 
     /**
       * Calls an HTTP POST function to verify if the user's guess was correct.
       *
-      * @param string $secretKey
-      * @param string $remoteip
-      * @param string $response
+      * @param String $secretKey
+      * @param String $remoteip
+      * @param String $response
       *
       * @throws ValidatorException When missing remote ip
       *
@@ -117,27 +130,21 @@ class IsTrueValidator extends ConstraintValidator
 		    "response" => $response
 	    ));
 
-	    $response = json_decode($response, true);
-
-	    if ($response["success"] == true) {
-		    return true;
-	    }
-
-        return false;
+        return json_decode($response, true);
     }
 
 	/**
 	 * Submits an HTTP POST to a reCAPTCHA server.
 	 *
-	 * @param string $host
-	 * @param string $path
-	 * @param array  $data
+	 * @param String $host
+	 * @param String $path
+	 * @param Array  $data
 	 *
-	 * @return array response
+	 * @return Array response
 	 */
 	private function httpGet($host, $path, $data)
 	{
-		$host = sprintf("%s%s?%s", $host, $path, http_build_query($data, null, '&'));
+		$host = sprintf("%s%s?%s", $host, $path, http_build_query($data, null, "&"));
 
 		$context = $this->getResourceContext();
 
@@ -160,7 +167,7 @@ class IsTrueValidator extends ConstraintValidator
 			$options[$protocol] = array(
 				"method"          => "GET",
 				"proxy"           => sprintf("tcp://%s:%s", $this->httpProxy["host"], $this->httpProxy["port"]),
-				"request_fulluri" => true,
+				"request_fulluri" => true
 			);
 
 			if (null !== $this->httpProxy["auth"]) {
