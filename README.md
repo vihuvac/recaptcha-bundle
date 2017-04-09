@@ -113,7 +113,11 @@ Congratulations! You're ready!
 
 When creating a new form class add the following line to create the field:
 
-#### Symfony ~2.3 to ~2.7
+##### Symfony and PHP Reference
+
+Package  | Symfony              | PHP                |
+-------- | -------------------- | ------------------ |
+Version  | **~2.3** to **~2.7** | **5.3** to **5.4** |
 
 ``` php
 <?php
@@ -126,7 +130,12 @@ public function buildForm(FormBuilder $builder, array $options)
 }
 ```
 
-#### Symfony ~2.8 to ~3.2
+##### Symfony and PHP Reference
+
+Package  | Symfony              | PHP                |
+-------- | -------------------- | ------------------ |
+Version  | **~2.8**             | **5.5** to **7.0** |
+Version  | **~3.0** to **~3.2** | **5.5** to **7.0** |
 
 > **Note**:
 >
