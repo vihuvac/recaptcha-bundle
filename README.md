@@ -107,6 +107,27 @@ Congratulations! You're ready!
 
 When creating a new form class add the following line to create the field:
 
+#### Symfony ~2.3 to ~2.7
+
+``` php
+<?php
+
+public function buildForm(FormBuilder $builder, array $options)
+{
+    // ...
+    $builder->add("recaptcha", "vihuvac_recaptcha");
+    // ...
+}
+```
+
+#### Symfony ~2.8 to ~3.2
+
+> **Note**:
+>
+> To denote the form type, you have to use the fully qualified class name - like ```TextType::class``` in PHP 5.5+ or ```Symfony\Component\Form\Extension\Core\Type\TextType```.
+> Before Symfony 2.8, you could use an alias for each type like ```text``` or ```date```.
+> The old alias syntax will still work until Symfony 3.0. For more details, see the [2.8 UPGRADE Log](https://github.com/symfony/symfony/blob/2.8/UPGRADE-2.8.md#form "2.8 UPGRADE Log - Official Doc").
+
 ``` php
 <?php
 
@@ -121,15 +142,6 @@ public function buildForm(FormBuilder $builder, array $options)
 ```
 
 You can pass extra options to reCAPTCHA with the ```attr > options``` option, e.g:
-
-| Tag attribute         | Render parameter |     Value        | Default |                Description               |
-| --------------------- | :--------------: | :--------------: | :-----: | ---------------------------------------: |
-| data-theme            | theme            | dark / light     | light   | Optional. The color theme of the widget. |
-| data-type             | type             | audio / image    | image   | Optional. The type of CAPTCHA to serve.  |
-| data-size             | size             | compact / normal | normal  | Optional. The size of the widget.        |
-| data-expired-callback | expiredCallback  |                  |         | Optional. The name of your callback function to be executed when the recaptcha response expires and the user needs to solve a new CAPTCHA. |
-|                       | defer            | true / false     | false   | Optional for the Ajax API.               |
-|                       | async            | true / false     | false   | Optional for the Ajax API.               |
 
 ``` php
 <?php
@@ -153,6 +165,17 @@ public function buildForm(FormBuilder $builder, array $options)
     // ...
 }
 ```
+
+Recaptcha tag attributes and render parameters:
+
+| Tag attribute         | Render parameter |     Value        | Default |                Description               |
+| --------------------- | :--------------: | :--------------: | :-----: | ---------------------------------------: |
+| data-theme            | theme            | dark / light     | light   | Optional. The color theme of the widget. |
+| data-type             | type             | audio / image    | image   | Optional. The type of CAPTCHA to serve.  |
+| data-size             | size             | compact / normal | normal  | Optional. The size of the widget.        |
+| data-expired-callback | expiredCallback  |                  |         | Optional. The name of your callback function to be executed when the recaptcha response expires and the user needs to solve a new CAPTCHA. |
+|                       | defer            | true / false     | false   | Optional for the Ajax API.               |
+|                       | async            | true / false     | false   | Optional for the Ajax API.               |
 
 To validate the field use:
 
@@ -308,4 +331,4 @@ If you want to use a custom theme, put your chunk of code before setting the the
 }}
 ```
 
-**Further reading**: [Google Official Documentation](https://developers.google.com/recaptcha/docs/start)
+**Further reading**: [Google Official Doc](https://developers.google.com/recaptcha/docs/start "Getting Started - Google Official Doc").
