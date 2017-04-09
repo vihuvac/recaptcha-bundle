@@ -60,7 +60,7 @@ class VihuvacRecaptchaTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function getParent()
     {
-        $this->assertSame(TextType::class ? "form" : "text", $this->type->getParent());
+        $this->assertSame(TextType::class ?: "text", $this->type->getParent());
     }
 
     /**
@@ -74,7 +74,6 @@ class VihuvacRecaptchaTypeTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    /*
     public function configureOptions()
     {
         $optionsResolver = new OptionsResolver();
@@ -104,7 +103,6 @@ class VihuvacRecaptchaTypeTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($expected, $options);
     }
-    */
 
     /**
      * @test
