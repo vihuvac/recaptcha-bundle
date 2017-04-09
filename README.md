@@ -3,7 +3,13 @@ VihuvacRecaptchaBundle
 
 This bundle provides easy reCAPTCHA form field for Symfony in order to protect your website from spam and abuse.
 
-[![Gitter](https://badges.gitter.im/vihuvac/recaptcha-bundle.svg)](https://gitter.im/vihuvac/recaptcha-bundle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![License](http://tools.vihuvac.com/images/collection/git-docs/license-mit.svg)](https://github.com/vihuvac/recaptcha-bundle/blob/master/LICENSE)
+[![Latest Stable Version](https://poser.pugx.org/vihuvac/recaptcha-bundle/v/stable)](https://packagist.org/packages/vihuvac/recaptcha-bundle) [![Latest Unstable Version](https://poser.pugx.org/vihuvac/recaptcha-bundle/v/unstable)](https://packagist.org/packages/vihuvac/recaptcha-bundle) [![Gitter](https://badges.gitter.im/vihuvac/recaptcha-bundle.svg)](https://gitter.im/vihuvac/recaptcha-bundle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![License](https://poser.pugx.org/vihuvac/recaptcha-bundle/license)](https://packagist.org/packages/vihuvac/recaptcha-bundle)
+
+[![Total Downloads](https://poser.pugx.org/vihuvac/recaptcha-bundle/downloads)](https://packagist.org/packages/vihuvac/recaptcha-bundle) [![Monthly Downloads](https://poser.pugx.org/vihuvac/recaptcha-bundle/d/monthly)](https://packagist.org/packages/vihuvac/recaptcha-bundle) [![Daily Downloads](https://poser.pugx.org/vihuvac/recaptcha-bundle/d/daily)](https://packagist.org/packages/vihuvac/recaptcha-bundle)
+
+Branch | Travis | Coveralls |
+------ | ------ | --------- |
+master | [![Build Status](https://travis-ci.org/vihuvac/recaptcha-bundle.svg?branch=master)](https://travis-ci.org/vihuvac/recaptcha-bundle) | [![Coverage Status](https://coveralls.io/repos/github/vihuvac/recaptcha-bundle/badge.svg?branch=master)](https://coveralls.io/github/vihuvac/recaptcha-bundle?branch=master) |
 
 ## Installation
 
