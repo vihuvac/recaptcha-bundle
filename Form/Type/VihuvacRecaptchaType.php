@@ -137,7 +137,7 @@ class VihuvacRecaptchaType extends AbstractType
      */
     public function getParent()
     {
-        return TextType::class ? "form" : "text";
+        return TextType::class ?: "text";
     }
 
     /**
