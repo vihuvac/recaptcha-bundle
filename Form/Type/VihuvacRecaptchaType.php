@@ -27,7 +27,7 @@ class VihuvacRecaptchaType extends AbstractType
      * The reCAPTCHA Server URL's
      */
     const RECAPTCHA_API_SERVER    = "https://www.google.com/recaptcha/api";
-	const RECAPTCHA_API_JS_SERVER = "https://www.google.com/recaptcha/api/js/recaptcha_ajax.js";
+    const RECAPTCHA_API_JS_SERVER = "https://www.google.com/recaptcha/api/js/recaptcha_ajax.js";
 
     /**
      * The public key
@@ -43,12 +43,12 @@ class VihuvacRecaptchaType extends AbstractType
      */
     protected $enabled;
 
-	/**
-	 * Use AJAX API
-	 *
-	 * @var Boolean
-	 */
-	protected $ajax;
+    /**
+     * Use AJAX API
+     *
+     * @var Boolean
+     */
+    protected $ajax;
 
     /**
      * Language
@@ -88,20 +88,20 @@ class VihuvacRecaptchaType extends AbstractType
             return;
         }
 
-	    if (!isset($options["language"])) {
-		    $options["language"] = $this->localeResolver->resolve();
-	    }
+        if (!isset($options["language"])) {
+            $options["language"] = $this->localeResolver->resolve();
+        }
 
         if (!$this->ajax) {
-	        $view->vars = array_replace($view->vars, array(
-		        "url_challenge" => sprintf("%s.js?hl=%s", self::RECAPTCHA_API_SERVER, $options["language"]),
-		        "site_key"      => $this->siteKey
-	        ));
+            $view->vars = array_replace($view->vars, array(
+                "url_challenge" => sprintf("%s.js?hl=%s", self::RECAPTCHA_API_SERVER, $options["language"]),
+                "site_key"      => $this->siteKey
+            ));
         } else {
-	        $view->vars = array_replace($view->vars, array(
-		        "url_api"  => self::RECAPTCHA_API_JS_SERVER,
-		        "site_key" => $this->siteKey
-	        ));
+            $view->vars = array_replace($view->vars, array(
+                "url_api"  => self::RECAPTCHA_API_JS_SERVER,
+                "site_key" => $this->siteKey
+            ));
         }
     }
 
@@ -113,19 +113,19 @@ class VihuvacRecaptchaType extends AbstractType
         $resolver->setDefaults(
             array(
                 "compound"      => false,
-	            "language"      => $this->localeResolver->resolve(),
+                "language"      => $this->localeResolver->resolve(),
                 "site_key"      => null,
                 "url_challenge" => null,
-	            "url_noscript"  => null,
+                "url_noscript"  => null,
                 "attr"          => array(
                     "options" => array(
                         "theme"           => "light",
-	                    "type"            => "image",
-	                    "size"            => "normal",
+                        "type"            => "image",
+                        "size"            => "normal",
                         "callback"        => null,
-	                    "expiredCallback" => null,
-	                    "defer"           => false,
-	                    "async"           => false
+                        "expiredCallback" => null,
+                        "defer"           => false,
+                        "async"           => false
                     )
                 )
             )
