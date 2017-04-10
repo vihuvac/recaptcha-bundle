@@ -117,7 +117,7 @@ When creating a new form class add the following line to create the field:
 
 Package  | Symfony              | PHP                |
 -------- | -------------------- | ------------------ |
-Version  | **~2.3** to **~2.7** | **5.3** to **5.4** |
+Version  | **~2.3** to **~2.7** | **5.3** to **5.6** |
 
 ``` php
 <?php
