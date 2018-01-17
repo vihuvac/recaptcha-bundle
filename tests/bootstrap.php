@@ -17,8 +17,8 @@ if (!file_exists(dirname(__DIR__) . "/composer.lock")) {
     die(
         "Dependencies must be installed using composer:
 
-        wget http://getcomposer.org/composer.phar
-        php composer.phar install
+        curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+        composer install
 
         Visit http://getcomposer.org/ for more information."
     );
