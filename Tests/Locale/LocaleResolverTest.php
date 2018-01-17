@@ -14,8 +14,9 @@ namespace Vihuvac\Bundle\RecaptchaBundle\Tests\Locale;
 use Vihuvac\Bundle\RecaptchaBundle\Locale\LocaleResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use PHPUnit\Framework\TestCase;
 
-class LocaleResolverTest extends \PHPUnit_Framework_TestCase
+class LocaleResolverTest extends TestCase
 {
     /**
      * @test

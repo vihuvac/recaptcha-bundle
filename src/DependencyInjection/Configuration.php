@@ -42,27 +42,27 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
 
-	    $this->addHttpClientConfiguration($rootNode);
+        $this->addHttpClientConfiguration($rootNode);
 
         return $treeBuilder;
     }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	private function addHttpClientConfiguration(ArrayNodeDefinition $node)
-	{
-		$node
-			->children()
-				->arrayNode("http_proxy")
-					->addDefaultsIfNotSet()
-					->children()
-						->scalarNode("host")->defaultValue(null)->end()
-						->scalarNode("port")->defaultValue(null)->end()
-						->scalarNode("auth")->defaultValue(null)->end()
-					->end()
-				->end()
-			->end()
-		;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    private function addHttpClientConfiguration(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode("http_proxy")
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode("host")->defaultValue(null)->end()
+                        ->scalarNode("port")->defaultValue(null)->end()
+                        ->scalarNode("auth")->defaultValue(null)->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
 }

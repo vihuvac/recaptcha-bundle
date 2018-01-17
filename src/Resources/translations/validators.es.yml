@@ -2,3 +2,4 @@ vihuvac_recaptcha:
     validator:
         message: Por favor, no olvides de marcar la casilla de verificación en el campo de reCAPTCHA.
         remote_ip: Por razones de seguridad, debes pasar la IP Remota al reCAPTCHA.
+        invalidHostMessage: El nombre del host asignado al reCAPTCHA no es válido.

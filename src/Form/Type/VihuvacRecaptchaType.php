@@ -123,6 +123,8 @@ class VihuvacRecaptchaType extends AbstractType
                         "size"            => "normal",
                         "callback"        => null,
                         "expiredCallback" => null,
+                        "badge"           => null,
+                        "bind"            => null,
                         "defer"           => false,
                         "async"           => false
                     )

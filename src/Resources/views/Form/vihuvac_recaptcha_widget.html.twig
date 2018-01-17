@@ -13,23 +13,44 @@
     {% spaceless %}
         {% if form.vars.vihuvac_recaptcha_enabled %}
             {% if not form.vars.vihuvac_recaptcha_ajax %}
-                <script type="text/javascript"
-                    src="{{ form.vars.url_challenge }}"
-                    {% if attr.options.defer is defined and attr.options.defer %}defer{% endif %}
-                    {% if attr.options.async is defined and attr.options.async %}async{% endif %}
+                {% if attr.options.size == "invisible" and attr.options.callback is not defined %}
+                    {% set options = attr.options|merge({"callback": "onReCaptchaSuccess"}) %}
+                    {% set attr = attr|merge({"options": options}) %}
+
+                    <script type="text/javascript">
+                        const onReCaptchaSuccess = () => {
+                            let errorDivs = document.getElementsByClassName("recaptcha-error");
+                            if (errorDivs.length) {
+                                errorDivs[0].className = "";
+                            }
+
+                            let errorMsgs = document.getElementsByClassName("recaptcha-error-message");
+                            if (errorMsgs.length) {
+                                errorMsgs[0].parentNode.removeChild(errorMsgs[0]);
+                            }
+
+                            let forms = document.getElementsByClassName("recaptcha-form");
+                            if (forms.length) {
+                                let recaptchaSubmitEvent = document.createEvent("Event");
+                                recaptchaSubmitEvent.initEvent("submit", true, true);
+                                forms[0].addEventListener("submit", event => {
+                                    event.target.submit();
+                                }, false);
+                                forms[0].dispatchEvent(recaptchaSubmitEvent);
+                            }
+                        };
+                    </script>
+                {% endif %}
+
+                <script type="text/javascript" src="{{ form.vars.url_challenge }}"
+                    {%- if attr.options.defer is defined and attr.options.defer %} defer{% endif -%}
+                    {%- if attr.options.async is defined and attr.options.async %} async{% endif -%}
                 ></script>
-                <div
-                    class="g-recaptcha"
-                    data-theme="{{ attr.options.theme }}"
-                    data-type="{{ attr.options.type }}"
-                    data-size="{{ attr.options.size }}"
-                    data-sitekey="{{ form.vars.site_key }}"
-                    {%- if attr.options.callback is defined %}
-                        data-callback="{{ attr.options.callback }}"
-                    {% endif -%}
-                    {% if attr.options.expiredCallback is defined %}
-                        data-expired-callback="{{ attr.options.expiredCallback }}"
-                    {% endif %}
+                <div class="g-recaptcha" data-theme="{{ attr.options.theme }}" data-size="{{ attr.options.size }}" data-type="{{ attr.options.type }}" data-sitekey="{{ form.vars.site_key }}"
+                     {%- if attr.options.callback is defined %} data-callback="{{ attr.options.callback }}"{% endif -%}
+                     {%- if attr.options.expiredCallback is defined %} data-expired-callback="{{ attr.options.expiredCallback }}"{% endif -%}
+                     {%- if attr.options.bind is defined %} data-bind="{{ attr.options.bind }}"{% endif -%}
+                     {%- if attr.options.badge is defined %} data-badge="{{ attr.options.badge }}"{% endif -%}
                 ></div>
                 <noscript>
                     <div style="width: 302px; height: 352px;">
@@ -57,7 +78,7 @@
                 <div id="vihuvac_recaptcha_div"></div>
                 <script type="text/javascript">
                     (function() {
-                        var script = document.createElement("script");
+                        let script = document.createElement("script");
                         script.type = "text/javascript";
                         script.onload = function() {
                             Recaptcha.create("{{ form.vars.site_key }}", "vihuvac_recaptcha_div", {{ attr.options|default({})|json_encode|raw }});

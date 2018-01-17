@@ -26,13 +26,16 @@
     },
     "autoload": {
         "psr-4": {
-            "Vihuvac\\Bundle\\RecaptchaBundle\\": ""
+            "Vihuvac\\Bundle\\RecaptchaBundle\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Vihuvac\\Bundle\\RecaptchaBundle\\Tests\\": "Tests"
+            "Vihuvac\\Bundle\\RecaptchaBundle\\Tests\\": "tests/"
         }
+    },
+    "config": {
+        "sort-packages": true
     },
     "extra": {
         "branch-alias": {

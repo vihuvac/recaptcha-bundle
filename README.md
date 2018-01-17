@@ -15,15 +15,15 @@ master | [![Build Status](https://travis-ci.org/vihuvac/recaptcha-bundle.svg?bra
 
 ### Step 1: Using composer and enable the Bundle
 
-To install VihuvacRecaptchaBundle with Composer just run via command line (terminal):
+To install the bundle via composer, just run from the command line (terminal):
 
 ```bash
-php composer.phar require vihuvac/recaptcha-bundle
+$ composer require vihuvac/recaptcha-bundle
 ```
 
-Now, Composer will automatically download all required files, and install them for you. All that is left to do is to update your ```AppKernel.php``` file, and register the new bundle:
+Composer will automatically download all the required files, and install them for you. All that is left to do is to update your ```AppKernel.php``` file, and register the new bundle:
 
-``` php
+```php
 // app/AppKernel.php
 
 <?php
@@ -41,7 +41,7 @@ public function registerBundles()
 
 Add the following to your config file:
 
-``` yaml
+```yaml
 # app/config/config.yml
 
 vihuvac_recaptcha:
@@ -58,7 +58,7 @@ vihuvac_recaptcha:
 
 You can easily **enable** and **disable** the reCAPTCHA feature using any one of the booleans ```true``` or ```false``` through the **enabled** parameter, e.g:
 
-``` yaml
+```yaml
 # app/config/config.yml
 
 vihuvac_recaptcha:
@@ -68,7 +68,7 @@ vihuvac_recaptcha:
 
 If you want to use the language used by the locale request as the language for the reCAPTCHA, you must activate the resolver (deactivated by default):
 
-``` yaml
+```yaml
 # app/config/config.yml
 
 vihuvac_recaptcha:
@@ -78,7 +78,7 @@ vihuvac_recaptcha:
 
 You can load the reCAPTCHA using the Ajax API (**optional**):
 
-``` yaml
+```yaml
 # app/config/config.yml
 
 vihuvac_recaptcha:
@@ -88,7 +88,7 @@ vihuvac_recaptcha:
 
 Additionally you can add HTTP Proxy configuration (**optional**):
 
-``` yaml
+```yaml
 # app/config/config.yml
 
 vihuvac_recaptcha:
@@ -99,7 +99,7 @@ vihuvac_recaptcha:
 ```
 In case you have turned off the domain name checking on reCAPTCHA's end, you'll need to check the origin of the response by enabling the ```verify_host``` option:
 
-``` yaml
+```yaml
 # app/config/config.yml
 
 vihuvac_recaptcha:
@@ -119,7 +119,7 @@ Package  | Symfony              | PHP                |
 -------- | -------------------- | ------------------ |
 Version  | **~2.3** to **~2.7** | **5.3** to **5.6** |
 
-``` php
+```php
 <?php
 
 public function buildForm(FormBuilder $builder, array $options)
@@ -134,8 +134,8 @@ public function buildForm(FormBuilder $builder, array $options)
 
 Package  | Symfony              | PHP                |
 -------- | -------------------- | ------------------ |
-Version  | **~2.8**             | **5.5** to **7.0** |
-Version  | **~3.0** to **~3.2** | **5.5** to **7.0** |
+Version  | **~2.8**             | **5.5** to **7.1** |
+Version  | **~3.0** to **~3.3** | **5.5** to **7.1** |
 
 > **Note**:
 >
@@ -143,45 +143,45 @@ Version  | **~3.0** to **~3.2** | **5.5** to **7.0** |
 > Before Symfony 2.8, you could use an alias for each type like ```text``` or ```date```.
 > The old alias syntax will still work until Symfony 3.0. For more details, see the [2.8 UPGRADE Log](https://github.com/symfony/symfony/blob/2.8/UPGRADE-2.8.md#form "2.8 UPGRADE Log - Official Doc").
 
-``` php
+```php
 <?php
 
-use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType;
+use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType as RecaptchaType;
 
 public function buildForm(FormBuilder $builder, array $options)
 {
     // ...
-    $builder->add("recaptcha", VihuvacRecaptchaType::class);
+    $builder->add("recaptcha", RecaptchaType::class);
     // ...
 }
 ```
 
 You can pass extra options to reCAPTCHA with the ```attr > options``` option, e.g:
 
-``` php
+```php
 <?php
 
-use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType;
+use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType as RecaptchaType;
 
 public function buildForm(FormBuilder $builder, array $options)
 {
     // ...
-    $builder->add("recaptcha", VihuvacRecaptchaType::class,
-        array(
-            "attr" => array(
-                "options" => array(
-                    "theme" => "light",
-                    "type"  => "audio",
-                    "size"  => "normal"
-                )
+    $builder->add("recaptcha", RecaptchaType::class, array(
+        "attr" => array(
+            "options" => array(
+                "theme" => "light",
+                "type"  => "audio",
+                "size"  => "normal",
+                "defer" => false,   // Set true if you want to use the Ajax API.
+                "async" => false    // Set true if you want to use the Ajax API.
             )
         )
-    );
+    ));
     // ...
 }
 ```
 
-Recaptcha tag attributes and render parameters:
+reCAPTCHA tag attributes and render parameters:
 
 | Tag attribute         | Render parameter |     Value        | Default |                Description               |
 | --------------------- | :--------------: | :--------------: | :-----: | ---------------------------------------: |
@@ -192,9 +192,59 @@ Recaptcha tag attributes and render parameters:
 |                       | defer            | true / false     | false   | Optional for the Ajax API.               |
 |                       | async            | true / false     | false   | Optional for the Ajax API.               |
 
+Support Google's Invisible reCAPTCHA! It's super easy:
+
+```php
+<?php
+
+use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType as RecaptchaType;
+
+public function buildForm(FormBuilder $builder, array $options)
+{
+    // ...
+    $builder->add("recaptcha", RecaptchaType::class, array(
+        "attr" => array(
+            "options" => array(
+                "theme"    => "light",
+                "type"     => "image",
+                "size"     => "invisible",          // Set size to the invisible reCAPTCHA.
+                "defer"    => false,                // Set true if you are using the Ajax API.
+                "async"    => false,                // Set true if you are using the Ajax API.
+                "callback" => "onReCaptchaSuccess", // Callback will be set by default if it's not defined (along with JS function that validates the form on success).
+                "bind"     => "buttonSubmit",       // This is the form submit button id (html attribute).
+                // ...
+             )
+        )
+    ));
+    // ...
+}
+```
+
+> **Note**:
+> If you use the pre-defined callback, you would need to add ```recaptcha-form``` class to your ```<form>``` tag.
+
+If you need to configure the language for the reCAPTCHA depending on your site language (ideal for multi-language sites) you can pass the language with the "language" option:
+
+```php
+<?php
+
+use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType as RecaptchaType;
+
+public function buildForm(FormBuilder $builder, array $options)
+{
+    // ...
+    $builder->add("recaptcha", RecaptchaType::class, array(
+        "language" => "en",
+        // ...
+    ));
+    // ...
+}
+```
+
+
 To validate the field use:
 
-``` php
+```php
 <?php
 
 use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints as Recaptcha;
@@ -209,56 +259,54 @@ Another method would consist to pass the validation constraints as an options of
 If we take the example from above, the buildForm method would look like this.
 Please note that if you set ```mapped => false``` then the annotation will not work. You have to also set ```constraints```:
 
-``` php
+```php
 <?php
 
-use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType;
+use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType as RecaptchaType;
 use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
 
 public function buildForm(FormBuilder $builder, array $options)
 {
     // ...
-    $builder->add("recaptcha", VihuvacRecaptchaType::class,
-        array(
-            "attr" => array(
-                "options" => array(
-                    "theme" => "light",
-                    "type"  => "audio",
-                    "size"  => "normal"
-                )
-            ),
-            "mapped"      => false,
-            "constraints" => array(
-                new RecaptchaTrue()
+    $builder->add("recaptcha", RecaptchaType::class, array(
+        "attr" => array(
+            "options" => array(
+                "theme" => "light",
+                "type"  => "audio",
+                "size"  => "normal"
             )
+        ),
+        "mapped"      => false,
+        "constraints" => array(
+            new RecaptchaTrue()
         )
-    );
+    ));
     // ...
 ```
 
 
-Cool, now you are ready to implement the form widget:
+Cool! The form template resource is now auto registered via container extension.
+However, you can always implement your own custom form widget:
 
 **PHP**:
 
-``` php
+```php
 <?php $view["form"]->setTheme($form, array("VihuvacRecaptchaBundle:Form")) ?>
 
-<?php echo $view["form"]->widget($form["recaptcha"],
-    array(
-        "attr" => array(
-            "options" => array(
-                "theme" => "light",
-                "type"  => "audio"
-            )
+<?php echo $view["form"]->widget($form["recaptcha"], array(
+    "attr" => array(
+        "options" => array(
+            "theme" => "light",
+            "type"  => "audio",
+            "size"  => "normal"
         )
-    ))
-?>
+    )
+)) ?>
 ```
 
 **Twig**:
 
-``` jinja
+```twig
 {% form_theme form "VihuvacRecaptchaBundle:Form:vihuvac_recaptcha_widget.html.twig" %}
 
 {{
@@ -267,7 +315,8 @@ Cool, now you are ready to implement the form widget:
             "attr": {
                 "options": {
                     "theme": "light",
-                    "type": "audio"
+                    "type": "audio",
+                    "size": "normal"
                 },
             }
         }
@@ -275,19 +324,19 @@ Cool, now you are ready to implement the form widget:
 }}
 ```
 
-If you are not using a form, you can still implement the reCAPTCHA field
-using JavaScript:
+If you are not using a form, you can still implement the reCAPTCHA field using JavaScript:
 
 **PHP**:
 
-``` php
+```php
 <div id="recaptcha-container"></div>
 <script type="text/javascript">
     $(document).ready(function() {
         $.getScript("<?php echo \Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType::RECAPTCHA_API_JS_SERVER ?>", function() {
             Recaptcha.create("<?php echo $form['recaptcha']->get('site_key') ?>", "recaptcha-container", {
                 theme: "light",
-                type: "audio"
+                type: "audio",
+                "size": "normal"
             });
         });
     };
@@ -296,14 +345,15 @@ using JavaScript:
 
 **Twig**:
 
-``` jinja
+```twig
 <div id="recaptcha-container"></div>
 <script type="text/javascript">
     $(document).ready(function() {
         $.getScript("{{ constant('\\Vihuvac\\Bundle\\RecaptchaBundle\\Form\\Type\\VihuvacRecaptchaType::RECAPTCHA_API_JS_SERVER') }}", function() {
             Recaptcha.create("{{ form.recaptcha.get('site_key') }}", "recaptcha-container", {
                 theme: "light",
-                type: "audio"
+                type: "audio",
+                "size": "normal"
             });
         });
     });
@@ -314,7 +364,7 @@ using JavaScript:
 
 If you want to use a custom theme, put your chunk of code before setting the theme:
 
-```
+```twig
 <div id="recaptcha_widget">
     <div id="recaptcha_image"></div>
     <div class="recaptcha_only_if_incorrect_sol" style="color:red">Incorrect please try again</div>
@@ -346,4 +396,16 @@ If you want to use a custom theme, put your chunk of code before setting the the
 }}
 ```
 
-**Further reading**: [Google Official Doc](https://developers.google.com/recaptcha/docs/start "Getting Started - Google Official Doc").
+**Further reading**: [Google Official Doc](https://developers.google.com/recaptcha/ "Getting Started - Google Official Doc").
+
+## Tests
+
+Execute this command to run tests:
+
+```bash
+$ cd recaptcha-bundle/
+$ ./vendor/bin/phpunit
+```
+
+> **Note**:
+> If you are running tests only and within the bundle, as first step you should run ```composer install``` in order to install the required dependencies. Then you'll be able to run the tests!

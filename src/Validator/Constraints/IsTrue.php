@@ -24,6 +24,11 @@ class IsTrue extends Constraint
      */
     public $message = "vihuvac_recaptcha.validator.message";
 
+    /**
+     * The reCAPTCHA validation message
+     */
+    public $invalidHostMessage = "vihuvac_recaptcha.validator.invalidHostMessage";
+
 
     /**
      * {@inheritdoc}

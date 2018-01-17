@@ -11,18 +11,23 @@
 
 namespace Vihuvac\Bundle\RecaptchaBundle\Tests\Form\Type;
 
-use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType;
+use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType as RecaptchaType;
 use Vihuvac\Bundle\RecaptchaBundle\Locale\LocaleResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Test\TypeTestCase;
 
-class VihuvacRecaptchaTypeTest extends \PHPUnit_Framework_TestCase
+/**
+ * Tests that tags are transformed correctly using the data transformer.
+ *
+ * See https://symfony.com/doc/current/testing/database.html
+ */
+class VihuvacRecaptchaTypeTest extends TypeTestCase
 {
     /**
-     * @var VihuvacRecaptchaType
+     * @var RecaptchaType $type
      */
     protected $type;
 
@@ -30,8 +35,8 @@ class VihuvacRecaptchaTypeTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $requestStack   = $this->createMock(RequestStack::class);
-        $localeResolver = new LocaleResolver("fr", false, $requestStack);
-        $this->type     = new VihuvacRecaptchaType("key", true, true, $localeResolver);
+        $localeResolver = new LocaleResolver("en", false, $requestStack);
+        $this->type     = new RecaptchaType("key", true, true, $localeResolver);
     }
 
     /**
@@ -58,14 +63,6 @@ class VihuvacRecaptchaTypeTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function getParent()
-    {
-        $this->assertSame(TextType::class ?: "text", $this->type->getParent());
-    }
-
-    /**
-     * @test
-     */
     public function getSiteKey()
     {
         $this->assertSame("key", $this->type->getSiteKey());
@@ -80,28 +77,28 @@ class VihuvacRecaptchaTypeTest extends \PHPUnit_Framework_TestCase
 
         $this->type->configureOptions($optionsResolver);
 
-        $options = $optionsResolver->resolve();
-
         $expected = array(
             "compound"      => false,
-            "language"      => "fr",
-            "public_key"    => null,
+            "language"      => "en",
+            "site_key"      => null,
             "url_challenge" => null,
             "url_noscript"  => null,
             "attr"          => array(
                 "options" => array(
-                    "theme"           => "dark",
-                    "type"            => "audio",
+                    "theme"           => "light",
+                    "type"            => "image",
                     "size"            => "normal",
                     "callback"        => null,
                     "expiredCallback" => null,
+                    "bind"            => null,
+                    "badge"           => null,
                     "defer"           => false,
                     "async"           => false
                 )
             )
         );
 
-        $this->assertSame($expected, $options);
+        $this->assertSame($expected, $optionsResolver->resolve($expected));
     }
 
     /**
