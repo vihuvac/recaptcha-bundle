@@ -1,6 +1,12 @@
 VihuvacRecaptchaBundle
 ======================
 
+> :warning: **DEPRECATED**:
+> 
+> Unfortunately I want to inform this bundle is getting deprecated, I recommend using [EWZRecaptchaBundle](https://packagist.org/packages/excelwebzone/recaptcha-bundle) instead. Sorry for the inconvenience. :pensive:
+
+---
+
 This bundle provides easy reCAPTCHA form field for Symfony in order to protect your website from spam and abuse.
 
 [![Latest Stable Version](https://poser.pugx.org/vihuvac/recaptcha-bundle/v/stable)](https://packagist.org/packages/vihuvac/recaptcha-bundle) [![Latest Unstable Version](https://poser.pugx.org/vihuvac/recaptcha-bundle/v/unstable)](https://packagist.org/packages/vihuvac/recaptcha-bundle) [![Gitter](https://badges.gitter.im/vihuvac/recaptcha-bundle.svg)](https://gitter.im/vihuvac/recaptcha-bundle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![License](https://poser.pugx.org/vihuvac/recaptcha-bundle/license)](https://packagist.org/packages/vihuvac/recaptcha-bundle)
